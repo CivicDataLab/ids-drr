@@ -244,6 +244,7 @@ export function Content({
         </div>
         <div className="self-end">
           <MonthPicker
+            name="time-period-select"
             defaultValue={parseDate('2023-08-01')}
             label="Select Month"
             minValue={parseDate(minDate || '2023-01-04')}

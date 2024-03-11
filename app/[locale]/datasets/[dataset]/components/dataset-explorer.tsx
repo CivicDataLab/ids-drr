@@ -44,6 +44,7 @@ export function Content({ slug }: { slug: string }) {
           explorerData?.resource_set.map((resource, index) => (
             <DatasetResources
               key={index}
+              id={resource?.id}
               fileName={resource?.file_details?.source_file_name || 'NA'}
               modified={resource?.modified}
               size={resource?.byte_size || 0}
@@ -53,11 +54,6 @@ export function Content({ slug }: { slug: string }) {
           <Text>Not Found</Text>
         ),
     },
-    // {
-    //   label: 'Visualizations',
-    //   // value: 'visualizations',
-    //   content: <Text>Coming Soon</Text>,
-    // },
   ];
 
   const tabList = [
@@ -76,10 +72,8 @@ export function Content({ slug }: { slug: string }) {
       <Text className=" pt-4" variant="heading2xl" fontWeight="bold">
         {datasetsExplorerPageHeader}
       </Text>
-      {/* <div className="bg-surface py-3.5 ps-6">
-        <Breadcrumbs crumbs={breadcrumbs} />
-      </div> */}
-      <div className="flex flex-col gap-8">
+
+      <div className="flex flex-col">
         <DatasetInfoCard
           title={explorerData?.title || 'NA'}
           description={explorerData?.description || 'NA'}

@@ -57,10 +57,6 @@ export const DatasetInfoCard = ({
                   Visit source website
                 </Text>
                 <SourceWebsite />
-
-                {/* <IconButton color="interactive" size="slim" icon={Icons.link}>
-                  Share
-                </IconButton> */}
               </div>
             </Link>
 
@@ -70,14 +66,6 @@ export const DatasetInfoCard = ({
                   Share Dataset
                 </Text>
                 <ShareDB />
-                {/* <IconButton
-                  className="absolute top-3 flex flex-col items-center justify-center"
-                  color="interactive"
-                  size="slim"
-                  icon={Icons.databaseShare}
-                >
-                  Share
-                </IconButton> */}
               </div>
             </Link>
           </div>

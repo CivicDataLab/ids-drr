@@ -1,12 +1,16 @@
+import Link from 'next/link';
 import { Button, ButtonGroup, Text } from 'opub-ui';
 
+import { backendUrl } from '@/config/site';
 import { formatDate } from '@/lib/utils';
 
 export const DatasetResources = ({
+  id,
   fileName,
   size,
   modified,
 }: {
+  id: string;
   fileName: string;
   size: number;
   modified: string;
@@ -22,12 +26,14 @@ export const DatasetResources = ({
         </Text>
       </div>
 
-      <Text className="min-w-[50px]" variant="headingXs" fontWeight="medium">
+      {/* <Text className="min-w-[50px]" variant="headingXs" fontWeight="medium">
         ({size.toString()}K)
-      </Text>
+      </Text> */}
 
       <Button className="w-[136px] bg-[#71E57D] text-baseGraySlateSolid12 ">
-        Download
+        <Link href={`${backendUrl.datasets}/download/${parseInt(id)}/`}>
+          Download
+        </Link>
       </Button>
     </div>
   );

@@ -35,21 +35,20 @@ export type SidebarNavItem = {
   icon?: keyof typeof Icons;
 };
 
-
-
 export type FilterProps = {
   [key: string]: string[];
 };
 
 export type Datasets = {
+  categories: string[];
   title: string;
   slug: string | null | undefined;
   source: string;
   description: string;
   organization: {
-    logo? : string | undefined | undefined,
-    homepage: string
-  },
+    logo?: string | undefined | undefined;
+    homepage: string;
+  };
   metaData: {
     lastUpdated: string;
     updateFrequency: string;

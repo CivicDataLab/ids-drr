@@ -73,7 +73,7 @@ export function Content({ slug }: { slug: string }) {
         {datasetsExplorerPageHeader}
       </Text>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-8">
         <DatasetInfoCard
           title={explorerData?.title || 'NA'}
           description={explorerData?.description || 'NA'}

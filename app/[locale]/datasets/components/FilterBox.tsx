@@ -45,11 +45,7 @@ export const FilterBox = ({
 
   const checkIfPresent = (filterGroup: string, filterValue: string) => {
     return selectedFilters.some((item: { [x: string]: string | string[] }) => {
-      if (item.hasOwnProperty(filterGroup)) {
-        console.log(
-          "item[filterGroup][0].split(',').includes(filterValue);",
-          item[filterGroup][0].split(',').includes(filterValue)
-        );
+      if (Object.prototype.hasOwnProperty.call(item, filterGroup)) {
         return item[filterGroup][0].split(',').includes(filterValue);
       }
       return false;

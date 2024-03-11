@@ -90,7 +90,7 @@ export const ScoreInfo = ({ label, value, indicator }: ScoreProps) => (
   <div className="mt-2">
     {label} :{' '}
     {indicator === 'risk-score' ? (
-      <strong className="pl-2">{value}/6</strong>
+      <strong className="pl-2">{value}/5</strong>
     ) : (
       <strong className="pl-2">{parseFloat(value).toFixed(2)}</strong>
     )}

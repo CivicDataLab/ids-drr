@@ -134,7 +134,7 @@ export const DistrictBar = ({
         <ProgressBar
           size="small"
           customColor={RiskColorMap[value]}
-          value={(value / 6) * 100}
+          value={(value / 5) * 100}
         />
       </div>
     </div>

@@ -15,19 +15,11 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <Box
-      width="100%"
-      minHeight="100%"
-      flex
-      justifyContent="center"
-      alignItems="center"
-      direction="column"
-      gap="3"
-    >
+    <div className="flex flex-col min-h-full w-full justify-center items-center gap-3">
       <Text variant="headingMd" as="h2">
         Something went wrong!
       </Text>
       <Button onClick={() => reset()}>Try again</Button>
-    </Box>
+    </div>
   );
 }

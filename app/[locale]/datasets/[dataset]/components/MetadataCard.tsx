@@ -1,0 +1,60 @@
+import { Divider, Tag, Text } from 'opub-ui';
+
+export interface Metadata {
+  lastUpdated: string;
+  updateFrequency: string;
+  fileTypes?: string[];
+  tags: string[];
+  licenses: (string | 'NA')[];
+}
+
+export function MetadataCard({
+  lastUpdated,
+  updateFrequency,
+  fileTypes,
+  tags,
+  licenses,
+}: Metadata) {
+  return (
+    <div className="flex shrink-0 basis-[350px] flex-col gap-4 bg-surfaceDefault px-6 py-4 shadow-elementCard ">
+      <Text variant="headingMd" fontWeight="semibold">
+        Metadata
+      </Text>
+      <dl>
+        <DataList label={'Last Updated'} value={lastUpdated || 'NA'} />
+        <DataList label={'Update Frequency'} value={updateFrequency || 'NA'} />
+        <DataList label={'Additional Tags'} value={tags || 'NA'} />
+        <DataList label={'File types'} value={fileTypes || 'NA'} />
+        <DataList label={'Licenses'} value={licenses || 'NA'} />
+      </dl>
+    </div>
+  );
+}
+
+export const DataList = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string[] | string;
+}) => {
+  return (
+    <div className="flex flex-col">
+      <div className="border-baseGraySlateSolid12a flex items-center gap-4 self-stretch border-b-1 py-2   ">
+        <dt className="min-w-[130px]">
+          <Text fontWeight="medium" variant="headingMd">
+            {label} :
+          </Text>
+        </dt>
+        <dd className="flex flex-wrap items-center gap-1">
+          {Array.isArray(value) ? (
+            value.map((tag, index) => <Tag key={index}>{tag}</Tag>)
+          ) : (
+            <Text variant="bodyMd">{value}</Text>
+          )}
+        </dd>
+      </div>
+      <Divider className="mt-0" />
+    </div>
+  );
+};

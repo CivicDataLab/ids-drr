@@ -1,12 +1,12 @@
 import React from 'react';
-// import Link from 'next/link';
+import Link from 'next/link';
 import { Button, Tag, Text } from 'opub-ui';
 
-import { DatasetSource } from '@/config/consts';
+import { DatasetSource, LastUpdated, UpdateFreq } from '@/config/consts';
 import { formatDate } from '@/lib/utils';
 
 export interface DataProps {
-  keyIndex:number;
+  keyIndex: number;
   title: string;
   source: string;
   description: string;
@@ -23,31 +23,38 @@ export const DatasetCard = ({
   title,
   source,
   description,
+  lastUpdated,
+  updateFrequency,
   fileTypes,
   period,
   tags,
+  slug,
   datasetDownloadLink,
 }: DataProps) => {
+  // console.log('Period[0]', formatDate(lastUpdated));
+
   return (
-    <div key={keyIndex} className=" bg-surfaceDefault p-6 shadow-elementCard rounded-2 flex flex-col gap-4 rounded">
+    <div
+      key={keyIndex}
+      className=" flex flex-col gap-4 rounded-1 bg-surfaceDefault p-6 shadow-elementCard "
+    >
       <div
         id="leftContainer"
-        className="flex flex-2 flex-col gap-2 text-interactive items-stretch truncate"
+        className="flex-2 text-interactive flex flex-col items-stretch gap-2 truncate"
       >
-        {/* <Link href={`/datasets/${slug}`}> */}
-          <Text
-            color="inherit"
-            className=" text-textHighlight "
-            variant="headingLg"
-            fontWeight="semibold"
-            truncate
-          >
-            {title}
-          </Text>
-        {/* </Link> */}
-
-        <div className="flex items-start gap-4 self-stretch">
-          <div className="flex flex-col items-start gap-2 w-96">
+        <div className="flex items-start gap-6 ">
+          <div className="flex w-[324px] flex-shrink-0 flex-col flex-wrap items-start gap-3 p-0">
+            <Link href={`/datasets/${slug}`}>
+              <Text
+                // color="inherit"
+                className=" text-textSubdued "
+                variant="headingLg"
+                fontWeight="semibold"
+                truncate
+              >
+                {title}
+              </Text>
+            </Link>
             <Text
               color="default"
               className=" text-textDefault "
@@ -56,51 +63,51 @@ export const DatasetCard = ({
             >
               {DatasetSource} : {source}
             </Text>
-            <span className="flex items-start gap-1">
+            <span className="flex flex-col items-start gap-1">
               <Text
                 color="default"
-                className=" text-textSubdued "
+                className="  text-textSubdued  "
                 variant="bodySm"
                 fontWeight="regular"
               >
-                {/* {LastUpdated} : {formatDate(lastUpdated)} | {UpdateFreq} :{' '}
-                {updateFrequency} */}
+                {LastUpdated} : {formatDate(lastUpdated)} | {UpdateFreq} :{' '}
+                {updateFrequency}
+              </Text>
+              <Text
+                color="default"
+                className="  text-textSubdued  "
+                variant="bodySm"
+                fontWeight="regular"
+              >
                 Reference Period : {formatDate(period[0])} to{' '}
                 {formatDate(period[1])}
               </Text>
             </span>
-            {/* here is the tag code already written, check with ruthvik once */}
-            {/* <span className="flex flex-col w-80 p-0 items-start gap-3"> */}
-            <span className="flex gap-4 py-1 px-2 items-center">
-              {/* <Tag>TAG 1</Tag>
-              <Tag>TAG 1</Tag> */}
+
+            <span className="flex items-center gap-4 py-1 pr-2">
               {fileTypes?.length > 0 &&
-                fileTypes?.map((fileType, index) => (
-                  <Tag key={index}>{fileType}</Tag>
+                fileTypes?.slice(0, 3).map((fileType, index) => (
+                  <Tag key={index} background-color="#E1F0FF">
+                    {fileType}
+                  </Tag>
                 ))}
             </span>
           </div>
 
-          <div className="flex flex-col items-start gap-0.5 w-max ">
+          <div className="flex h-[100%] w-[100%] flex-1 flex-col items-start gap-8 p-0  ">
             <Text
               variant="bodyMd"
               fontWeight="regular"
-              className="w-[500px] whitespace-normal"
+              className=" self-stretch whitespace-normal"
+              color="default"
             >
               {description}
             </Text>
+            <span className="flex items-center gap-4 py-1 pr-2">
+              {tags?.length > 0 &&
+                tags?.map((tag, index) => <Tag key={index}>{tag}</Tag>)}
+            </span>
           </div>
-        </div>
-
-        <div
-          id="rightContainer"
-          className="flex flex-3 flex-col gap-2 items-end"
-        >
-          {tags?.length > 0 &&
-            tags?.map((tag, index) => <Tag key={index}>{tag}</Tag>)}
-          <Button className="bg-actionsPrimaryBasicDefault w-[156px] rounded hover:bg-actionsPrimaryBasicDefault">
-            <a href={datasetDownloadLink}>Download</a>
-          </Button>
         </div>
       </div>
     </div>

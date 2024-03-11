@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   IconAnchor,
   IconArrowLeft,
@@ -7,7 +8,10 @@ import {
   IconChartInfographic,
   IconChevronDown,
   IconChevronLeft,
+  IconChevronsLeft,
+  IconChevronsRight,
   IconChevronUp,
+  IconCircleChevronRight,
   IconDatabase,
   IconDatabaseCog,
   IconDatabasePlus,
@@ -15,27 +19,23 @@ import {
   IconDatabaseShare,
   IconDiamondsFilled,
   IconDownload,
+  IconExternalLink,
   IconHome,
   IconInfoCircleFilled,
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
   IconLink,
   IconListSearch,
+  IconMenu,
   IconReport,
   IconReportSearch,
   IconSearch,
   IconSquareRoundedArrowRight,
   IconSquareRoundedChevronLeftFilled,
   IconUserCog,
-  IconExternalLink,
-  IconChevronsLeft,
-  IconMenu,
   IconX,
   TablerIconsProps,
-  IconChevronsRight,
-  IconCircleChevronRight,
 } from '@tabler/icons-react';
-import React from 'react';
 
 export const Icons: {
   [key: string]: (props: TablerIconsProps) => React.ReactElement;
@@ -68,8 +68,8 @@ export const Icons: {
   home: IconHome,
   overview: IconReport,
   explorer: IconChartInfographic,
-  'database-share': IconDatabaseShare,
-  'database-search': IconDatabaseSearch,
+  databaseShare: IconDatabaseShare,
+  databaseSearch: IconDatabaseSearch,
   download: IconDownload,
   diamond: IconDiamondsFilled,
   externalLink: IconExternalLink,

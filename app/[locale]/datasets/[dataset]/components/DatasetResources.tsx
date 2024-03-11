@@ -13,7 +13,7 @@ export const DatasetResources = ({
 }) => {
   return (
     <div className="flex flex-row items-start justify-between gap-5 self-stretch p-2 ">
-      <div className="flex flex-col gap-1">
+      <div className="flex w-[356px] flex-col gap-1">
         <Text fontWeight="semibold" variant="headingMd">
           {fileName}
         </Text>
@@ -21,8 +21,9 @@ export const DatasetResources = ({
           Updated : {formatDate(modified)}
         </Text>
       </div>
+
       <Text className="min-w-[50px]" variant="headingXs" fontWeight="medium">
-        {size.toString()}
+        ({size.toString()}K)
       </Text>
 
       <Button className="w-[136px] bg-[#71E57D] text-baseGraySlateSolid12 ">

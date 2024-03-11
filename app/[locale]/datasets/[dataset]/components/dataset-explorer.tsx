@@ -72,7 +72,7 @@ export function Content({ slug }: { slug: string }) {
   ];
 
   return (
-    <div className="container grid h-max gap-8 px-10 py-6">
+    <div className="container grid flex-col gap-8 px-10 py-6">
       <Text className=" pt-4" variant="heading2xl" fontWeight="bold">
         {datasetsExplorerPageHeader}
       </Text>

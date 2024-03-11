@@ -15,8 +15,8 @@ const RiskColorMap: {
 const DatasetSource = 'Source';
 const LastUpdated = 'Last Updated';
 const UpdateFreq = 'Update Frequency';
-const datasetsPageHeader = 'DRR : Datasets';
-const datasetsExplorerPageHeader = 'DRR : Dataset Explorer';
+const datasetsPageHeader = 'Assam DRR : Datasets';
+const datasetsExplorerPageHeader = 'Assam DRR : Datasets';
 const DatasetsURL = `/datasets`;
 
 //analytics page

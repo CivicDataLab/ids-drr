@@ -40,8 +40,8 @@ export const gqlConfig: {
   analytics: 'https://drr.backend.open-contracting.in/graphql',
 };
 
-export const elasticSearch = {
-  datasets: 'https://opub-backend.civicdatalab.in/facets/',
+export const backendUrl = {
+  datasets: 'https://opub-backend.civicdatalab.in',
 };
 
 export const navbarConfig = {

@@ -14,9 +14,8 @@ export interface DataProps {
   updateFrequency: string;
   period: string[];
   fileTypes: string[];
-  tags: string[];
   slug: string;
-  datasetDownloadLink: string;
+  categories: string[];
 }
 export const DatasetCard = ({
   keyIndex,
@@ -27,34 +26,27 @@ export const DatasetCard = ({
   updateFrequency,
   fileTypes,
   period,
-  tags,
   slug,
-  datasetDownloadLink,
+  categories,
 }: DataProps) => {
-  // console.log('Period[0]', formatDate(lastUpdated));
-
+  const uniqueFileTypes = new Set(fileTypes);
+  const fileTypesArray = Array.from(uniqueFileTypes);
   return (
-    <div
-      key={keyIndex}
-      className=" flex flex-col gap-4 rounded-1 bg-surfaceDefault p-6 shadow-elementCard "
-    >
+    <Link href={`/datasets/${slug}`}>
       <div
-        id="leftContainer"
-        className="flex-2 text-interactive flex flex-col items-stretch gap-2 truncate"
+        key={keyIndex}
+        className="rounded-1 bg-surfaceDefault p-6 shadow-elementCard "
       >
         <div className="flex items-start gap-6 ">
-          <div className="flex w-[324px] flex-shrink-0 flex-col flex-wrap items-start gap-3 p-0">
-            <Link href={`/datasets/${slug}`}>
-              <Text
-                // color="inherit"
-                className=" text-textSubdued "
-                variant="headingLg"
-                fontWeight="semibold"
-                truncate
-              >
-                {title}
-              </Text>
-            </Link>
+          <div className="flex flex-shrink-0 basis-[350px] flex-col flex-wrap items-start gap-3 p-0">
+            <Text
+              className=" text-textSubdued "
+              variant="headingLg"
+              fontWeight="semibold"
+              truncate
+            >
+              {title}
+            </Text>
             <Text
               color="default"
               className=" text-textDefault "
@@ -85,8 +77,8 @@ export const DatasetCard = ({
             </span>
 
             <span className="flex items-center gap-4 py-1 pr-2">
-              {fileTypes?.length > 0 &&
-                fileTypes?.slice(0, 3).map((fileType, index) => (
+              {fileTypesArray?.length > 0 &&
+                fileTypesArray.map((fileType, index) => (
                   <Tag key={index} background-color="#E1F0FF">
                     {fileType}
                   </Tag>
@@ -94,22 +86,26 @@ export const DatasetCard = ({
             </span>
           </div>
 
-          <div className="flex h-[100%] w-[100%] flex-1 flex-col items-start gap-8 p-0  ">
+          <div className="flex max-h-[150px] min-h-[150px] flex-col gap-4 overflow-hidden">
             <Text
+              className="line-clamp-3"
               variant="bodyMd"
               fontWeight="regular"
-              className=" self-stretch whitespace-normal"
               color="default"
             >
               {description}
             </Text>
-            <span className="flex items-center gap-4 py-1 pr-2">
-              {tags?.length > 0 &&
-                tags?.map((tag, index) => <Tag key={index}>{tag}</Tag>)}
+            <span className="flex gap-2 py-1 pr-2">
+              {categories?.length > 0 &&
+                categories?.map((category, index) => (
+                  <Tag key={index} background-color="#E1F0FF">
+                    {category}
+                  </Tag>
+                ))}
             </span>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

@@ -13,14 +13,43 @@ import { Checkbox, Icon, Text } from 'opub-ui';
 import { Icons } from '@/components/icons';
 import styles from './Filter.module.scss';
 
-export const FilterBox = ({ filters }: { filters: FilterProps[] }) => {
+export const FilterBox = ({
+  filters,
+  selectedFilters,
+}: {
+  filters: FilterProps[];
+  selectedFilters: any;
+}) => {
   const router = useRouter();
-  const [selectedFilter, setSelectedFilter] = React.useState<string[]>([]);
+  const [selectedFilter, setSelectedFilter] = React.useState<{
+    [key: string]: string[];
+  }>({});
 
-  // Function to generate the URL with comma-separated values
   const generateURL = (key: string, filtersSelected: string[]) => {
-    const urlString = filtersSelected.join(',');
-    return router.push(`datasets/?${key}=${urlString}`);
+    const params = new URLSearchParams(window.location.search);
+
+    const existingKey = params?.has(key);
+
+    if (existingKey) {
+      // If the key already exists, append the new filters to it with a comma
+      params.set(key, `${filtersSelected.join(',')}`);
+    } else {
+      // If the key doesn't exist, set the filtersSelected directly under that key
+      params.set(key, filtersSelected.join(','));
+    }
+
+    const updatedQueryString = params.toString();
+
+    return router.push(`/datasets/?${updatedQueryString}`);
+  };
+
+  const checkIfPresent = (filterGroup: string, filterValue: string) => {
+    return selectedFilters.some((item: { [x: string]: string | string[] }) => {
+      if (Object.prototype.hasOwnProperty.call(item, filterGroup)) {
+        return item[filterGroup][0].split(',').includes(filterValue);
+      }
+      return false;
+    });
   };
 
   return (
@@ -57,13 +86,27 @@ export const FilterBox = ({ filters }: { filters: FilterProps[] }) => {
                         <Checkbox
                           key={itemIndex}
                           name={itemValue}
-                          onChange={() => {
+                          checked={
+                            checkIfPresent(key, itemValue) ? true : false
+                          }
+                          onChange={(changed) => {
                             setSelectedFilter((prevSelectedFilter) => {
-                              const updatedFilter = [
+                              let updatedArray;
+                              if (!changed) {
+                                updatedArray = (
+                                  prevSelectedFilter[key] || []
+                                ).filter((value) => value !== itemValue);
+                              } else {
+                                updatedArray = [
+                                  ...(prevSelectedFilter[key] || []),
+                                  itemValue,
+                                ];
+                              }
+                              const updatedFilter = {
                                 ...prevSelectedFilter,
-                                itemValue,
-                              ];
-                              generateURL(key, updatedFilter);
+                                [key]: updatedArray,
+                              };
+                              generateURL(key, updatedFilter[key]);
                               return updatedFilter;
                             });
                           }}

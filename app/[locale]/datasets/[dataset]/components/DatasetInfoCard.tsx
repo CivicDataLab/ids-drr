@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ShareDB } from '@/public/ShareDB';
+import { SourceWebsite } from '@/public/sourceWebsite';
 import { IconButton, Text } from 'opub-ui';
 
 import { DatasetSource, DatasetsURL } from '@/config/consts';
@@ -50,21 +52,21 @@ export const DatasetInfoCard = ({
           </Text>
           <div className="flex items-center gap-6">
             <Link href={homepage} className={cn(styles.dataSetLink)}>
-              <Text>Visit source website</Text>
-              <IconButton color="interactive" size="slim" icon={Icons.link}>
-                Share
-              </IconButton>
+              <div className="flex items-center gap-1">
+                <Text color="interactive" variant="bodyMd">
+                  Visit source website
+                </Text>
+                <SourceWebsite />
+              </div>
             </Link>
+
             <Link href={homepage} className={cn(styles.dataSetLink)}>
-              Share dataset
-              <IconButton
-                className="absolute top-3 flex flex-col items-center justify-center"
-                color="interactive"
-                size="slim"
-                icon={Icons.databaseShare}
-              >
-                Share
-              </IconButton>
+              <div className="flex items-center gap-1">
+                <Text color="interactive" variant="bodyMd">
+                  Share Dataset
+                </Text>
+                <ShareDB />
+              </div>
             </Link>
           </div>
         </div>

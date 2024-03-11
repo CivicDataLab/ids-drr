@@ -40,9 +40,9 @@ export const DataList = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <div className="border-baseGraySlateSolid12a flex items-center gap-4 self-stretch border-b-1 py-2   ">
-        <dt className="min-w-[130px]">
-          <Text fontWeight="medium" variant="headingMd">
+      <div className="border-baseGraySlateSolid12a flex items-center gap-1 self-stretch border-b-1 py-2   ">
+        <dt className="min-w-[50%]">
+          <Text fontWeight="medium" variant="headingSm">
             {label} :
           </Text>
         </dt>

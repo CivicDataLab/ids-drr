@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
 import {
   Ellipse,
   Exposure,
@@ -21,10 +20,8 @@ export function SidebarDefaultLayout({
   indicator,
   boundary,
 }: any) {
-  const list: { title: string; description: string }[] = [];
+  const list: { title: string; slug: string; description: string }[] = [];
 
-  const searchParams = useSearchParams();
-  const indicatorIcon = searchParams.get('indicator');
   const color = '#000000';
 
   const IconMap: { [key: string]: React.ReactNode } = {
@@ -39,11 +36,13 @@ export function SidebarDefaultLayout({
     indicatorDescriptions.map(
       (item: {
         name: string;
+        slug: string;
         long_description?: string;
         short_description: string;
       }) => {
         list.push({
           title: item?.name,
+          slug: item?.slug,
           description:
             item?.short_description || item?.long_description || 'NA',
         });
@@ -67,7 +66,7 @@ export function SidebarDefaultLayout({
           fontWeight="regular"
           className="flex items-center gap-2"
         >
-          {IconMap[indicatorIcon || 'risk-score']}
+          {IconMap[indicator || 'risk-score']}
           {deSlugify(indicator)}
         </Text>
         <Button variant="success" kind="secondary">
@@ -106,6 +105,7 @@ export function SidebarDefaultLayout({
             <IndicatorDescription
               key={index}
               title={indicator.title}
+              slug={indicator.slug}
               desc={indicator.description}
             />
           ))}
@@ -142,9 +142,11 @@ export const DistrictBar = ({
 };
 export const IndicatorDescription = ({
   title,
+  slug,
   desc,
 }: {
   title: string;
+  slug: string;
   desc: string;
 }) => {
   const IconMap: { [key: string]: React.ReactNode } = {
@@ -157,7 +159,7 @@ export const IndicatorDescription = ({
   return (
     <div className="flex flex-col">
       <div className="mb-2 mt-3 flex items-center">
-        {IconMap[title.toLowerCase().replace(/\s+/g, '-')] || (
+        {IconMap[slug] || (
           <Ellipse color="#000000" />
           // null
         )}

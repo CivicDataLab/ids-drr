@@ -4,13 +4,25 @@ import { elasticSearch } from '@/config/site';
 import { getData } from '@/lib/api';
 import { Content } from './components/dataset-layout';
 
-export default async function Home() {
-  const datasetData = await getData(elasticSearch.datasets);
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
+  const params = new URLSearchParams(searchParams);
+  const urlToFetch = params
+    ? `${elasticSearch.datasets}?${decodeURIComponent(params.toString())}`
+    : elasticSearch.datasets;
+  const datasetData = await getData(urlToFetch);
 
-  const filters : FilterProps[] = Object.keys(datasetData?.aggregations).map((key) => ({
-    [key]: datasetData?.aggregations[key]?.all?.buckets.map((bucket: { key: string; }) => bucket.key),
-  }));
-  
+  const filters: FilterProps[] = Object.keys(datasetData?.aggregations).map(
+    (key) => ({
+      [key]: datasetData?.aggregations[key]?.all?.buckets.map(
+        (bucket: { key: string }) => bucket.key
+      ),
+    })
+  );
+
   const data: Datasets[] = datasetData?.hits?.hits?.map((item: any) => {
     return {
       title: item._source?.dataset_title,
@@ -31,5 +43,11 @@ export default async function Home() {
     };
   });
 
-    return <Content count={datasetData?.hits?.total?.value} data={data} filters={filters}/>;
+  return (
+    <Content
+      count={datasetData?.hits?.total?.value}
+      data={data}
+      filters={filters}
+    />
+  );
 }

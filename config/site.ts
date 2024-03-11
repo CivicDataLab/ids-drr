@@ -69,7 +69,7 @@ export const mainConfig: MainConfig = {
     },
     {
       title: 'Datasets',
-      href: '/',
+      href: DatasetsURL,
     },
     {
       title: 'Resources',
@@ -77,7 +77,7 @@ export const mainConfig: MainConfig = {
     },
     {
       title: 'About us',
-      href: '/',
+      href: AboutUsURL,
     },
   ],
 

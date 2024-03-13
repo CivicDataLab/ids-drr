@@ -23,13 +23,14 @@ export function Content({
 }) {
   return (
     <div className="container mb-6 grid gap-4">
-      <div className="mt-6">
+      <div className="mt-6 pl-5">
         <Text variant="heading2xl">{datasetsPageHeader}</Text>
       </div>
 
       <div className=" container  ">
-        <div className=" mr-6 flex items-center justify-end gap-20 border-b-1 bg-[#96E79E] px-8 py-3">
-          <div className="flex flex-row items-center justify-end gap-8">
+        {/* <div className=" mr-6 flex items-center justify-end gap-20 border-b-1 bg-[#96E79E] px-8 py-3 "> */}
+        <div className="mr-6 flex flex-row items-center justify-end gap-6 border-b-1 bg-[#96E79E] px-8 py-3">
+          <div className="flex w-1/5 justify-end">
             <Text
               className="shrink-0"
               variant="bodyLg"
@@ -38,7 +39,10 @@ export function Content({
             >
               Showing {count} datasets
             </Text>
-            <div className="flex h-[36px] w-[700px] items-center gap-2">
+          </div>
+
+          <div className="flex w-4/5 flex-row items-stretch justify-between gap-8  ">
+            <div className="flex h-[36px] w-[700px] items-center justify-start gap-2 pl-6">
               <div className="flex-1">
                 <TextField
                   placeholder="Search by title, keyword, source, etc."
@@ -52,36 +56,36 @@ export function Content({
                 <SearchSvg />
               </div>
             </div>
-          </div>
-
-          <div className="flex w-[290px] flex-row items-center justify-end  gap-2 ">
-            <Text
-              variant="headingMd"
-              fontWeight="semibold"
-              alignment="center"
-              color="subdued"
-            >
-              SORT BY:
-            </Text>
-            <Select
-              defaultValue="SORT BY :"
-              className="w-[150px]"
-              // className=" flex w-fit flex-row items-center justify-end gap-2 "
-              label=""
-              name="Sort-by"
-              options={[
-                {
-                  label: 'A-Z',
-                  value: 'A-Z',
-                },
-                {
-                  label: 'Recent',
-                  value: 'Recent',
-                },
-              ]}
-            />
+            <div className="flex w-[290px] flex-row items-center justify-end  gap-2 ">
+              <Text
+                variant="headingMd"
+                fontWeight="semibold"
+                alignment="center"
+                color="subdued"
+              >
+                SORT BY:
+              </Text>
+              <Select
+                defaultValue="SORT BY :"
+                className="w-[150px]"
+                // className=" flex w-fit flex-row items-center justify-end gap-2 "
+                label=""
+                name="Sort-by"
+                options={[
+                  {
+                    label: 'A-Z',
+                    value: 'A-Z',
+                  },
+                  {
+                    label: 'Recent',
+                    value: 'Recent',
+                  },
+                ]}
+              />
+            </div>
           </div>
         </div>
+        {/* </div> */}
       </div>
 
       <div className="container flex gap-10">

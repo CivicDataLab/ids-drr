@@ -72,7 +72,7 @@ export const MapComponent = ({
   React.useEffect(() => {
     const regionsArray: string[] = [];
     regions?.forEach((region) => {
-      regionsArray.push(region.label);
+      regionsArray.push(region.value);
     });
 
     if (map) {
@@ -81,9 +81,11 @@ export const MapComponent = ({
 
       map.eachLayer((layer: any) => {
         const regionName = layer.feature?.properties.name;
+        const regionCode = layer.feature?.properties.code;
+
         const riskValue = layer.feature?.properties?.[indicator];
 
-        if (regionsArray.includes(regionName)) {
+        if (regionsArray.includes(regionCode)) {
           const popup = layer.getPopup();
           if (popup) {
             openPopups.push(popup);

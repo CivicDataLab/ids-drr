@@ -5,13 +5,8 @@ import dynamic from 'next/dynamic';
 import { Spinner, Text } from 'opub-ui';
 
 import { FactorList } from './factor-list';
+import MapChart from '@/components/MapChart';
 
-const MapChart = dynamic(
-  () => import('opub-ui/viz').then((mod) => mod.MapChart),
-  {
-    ssr: false,
-  }
-);
 export const MapComponent = ({
   indicator,
   regions,

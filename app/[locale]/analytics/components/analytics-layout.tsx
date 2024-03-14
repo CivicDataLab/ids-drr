@@ -9,8 +9,7 @@ import {
   parseAsString,
   useQueryState,
 } from 'next-usequerystate';
-import { Checkbox, MonthPicker, Select, Text } from 'opub-ui';
-import MultiSelect from 'react-select';
+import { Combobox, MonthPicker, Select} from 'opub-ui';
 
 import {
   ANALYTICS_DISTRICT_MAP_DATA,
@@ -30,22 +29,11 @@ export function Content({
   indicator: string;
 }) {
   interface Option {
-    isDisabled?: boolean;
+    disabled?: boolean;
     value: string;
     label: string;
-    group?: string;
+    type?: string;
   }
-
-  interface FormattedDataItem {
-    label: string;
-    options: Option[];
-  }
-
-  type DropdownOption = {
-    [x: string]: string;
-    label: string;
-    value: string;
-  };
 
   const [boundary, setBoundary] = useQueryState(
     'boundary',
@@ -121,31 +109,28 @@ export function Content({
     maxDate = formatDate(maxTimestamp, true);
   }
 
-  const DistrictDropdownOptions: DropdownOption[] = [];
-  let RevCircleDropdownOptions: FormattedDataItem[] = [];
+  let RevCircleDropdownOptions: Option[] = [];
+  let DistrictDropDownOption: Option[] = [];
 
   if (geographiesData.data && !geographiesData.isFetching) {
     if (boundary === 'revenue-circle') {
-      RevCircleDropdownOptions = Object.keys(
-        geographiesData?.data?.getDistrictRevCircle
-      ).map((key) => {
-        return {
-          label: key,
-          options: geographiesData?.data?.getDistrictRevCircle[key].map(
-            (item: { [x: string]: string; code: string }) => {
-              return {
-                value: item.code,
-                label: item['revenue-circle'],
-                group: key,
-              };
-            }
-          ),
-        };
-      });
+      let rawData = geographiesData?.data?.getDistrictRevCircle;
+      if (rawData) {
+        for (const district in rawData) {
+          const revenueCircles = rawData[district];
+          revenueCircles.forEach((circle: { "revenue-circle": string, code: string }) => {
+            RevCircleDropdownOptions.push({
+              label: circle['revenue-circle'],
+              value: circle.code,
+              type: district,
+            });
+          });
+        }
+      }
     } else {
       geographiesData.data?.getDistrictRevCircle?.forEach(
         (geography: { district: string; code: string }) => {
-          DistrictDropdownOptions.push({
+          DistrictDropDownOption.push({
             label: geography.district,
             value: geography.code ? geography.code : 'NA',
           });
@@ -154,44 +139,53 @@ export function Content({
     }
   }
 
-  const filteredOptions = (boundary: string) => {
+  React.useEffect(() => {
+    if ( region && region.length > 0 && geographiesData.data && boundary ==='revenue-circle') {
+      const filteredItems = RevCircleDropdownOptions.filter((item) =>
+        region.includes(item.value)
+      );
+
+      setSelectedGroup([filteredItems[0]?.type ?? ''])
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [geographiesData.data]);
+
+  const filterOpt = (boundary: string) => {
     if (boundary === 'revenue-circle') {
-      RevCircleDropdownOptions.forEach((item) => {
+      RevCircleDropdownOptions.forEach((item: any) => {
+
         if (
-          !selectedGroup.includes(item?.label || '') &&
+          !selectedGroup.includes(item?.type || '') &&
           selectedGroup.length > 0
         ) {
-          item.options.forEach((option) => {
-            option.isDisabled = true;
-          });
+          item.disabled = true;
         }
       });
 
-      const filteredOptions = RevCircleDropdownOptions.flatMap(
-        (item: { options: any[] }) =>
-          item.options.filter(
-            (option) =>
-              region?.includes(option.value) &&
-              (selectedGroup.length === 0 ||
-                selectedGroup.includes(option.group || ''))
-          )
+      const filteredOptions = RevCircleDropdownOptions.filter(
+        (option: any) =>
+          region?.includes(option.value) &&
+          (selectedGroup.length === 0 ||
+            selectedGroup.includes(option.type || ''))
       );
       return filteredOptions;
+    } else {
+      const filteredDistrictOptions = DistrictDropDownOption?.filter((option) =>
+        region?.includes(option.value)
+      );
+      return filteredDistrictOptions;
     }
-    const filteredDistrictOptions = DistrictDropdownOptions?.filter((option) =>
-      region?.includes(option.value)
-    );
-    return filteredDistrictOptions;
   };
 
   return (
     <React.Fragment>
-      <div className="mb-2 flex items-center justify-between gap-4">
+      <div className="mb-2 flex items-start justify-between gap-4">
         <Select
           defaultValue="revenue-circle"
           label="Select Boundary"
           value={boundary || 'district'}
-          className="basis-[200px] self-end"
+          className="basis-[200px]"
           name="boundary-select"
           onChange={(e) => {
             setBoundary(e, { shallow: false });
@@ -209,40 +203,29 @@ export function Content({
             },
           ]}
         />
-        <div className="flex grow flex-col">
-          <div className="flex items-center justify-between">
-            <Text>Select one or more Region</Text>
-            <Checkbox
-              name="All Regions"
-              checked={region && region.length > 0 ? false : true}
-              //onChange={handleCheckboxChange}
-            >
-              All Regions
-            </Checkbox>
-          </div>
-          <MultiSelect
-            className="z-max"
-            name="select-1"
-            isMulti
-            value={filteredOptions(boundary)}
-            onChange={(selectedOptions) => {
-              const selectedValues = selectedOptions.map(
-                (option) => option.value
+
+        <div className=" z-max w-11/12">
+          <Combobox
+            key={boundary === 'revenue-circle' ? JSON.stringify(RevCircleDropdownOptions) : JSON.stringify(DistrictDropDownOption)}
+            name="select region"
+            group
+            displaySelected
+            label="Select an Item"
+            list={boundary === 'revenue-circle' ? RevCircleDropdownOptions : DistrictDropDownOption}
+            selectedValue={filterOpt(boundary)}
+            onChange={(selectedOptions: any) => {
+              const val = selectedOptions.map((option: any) => option.value);
+              const group = selectedOptions.map(
+                (option: any) => option?.type ?? ''
               );
-              const selectedGroups = selectedOptions.map(
-                (option) => option?.group ?? ''
-              );
-              setSelectedGroup(selectedGroups);
-              setRegion(selectedValues, { shallow: false });
+
+              setSelectedGroup(group);
+              setRegion(val, { shallow: false });
             }}
-            options={
-              boundary === 'revenue-circle'
-                ? RevCircleDropdownOptions
-                : DistrictDropdownOptions
-            }
           />
         </div>
-        <div className="self-end">
+
+        <div className="basis-[300px]">
           <MonthPicker
             name="time-period-select"
             defaultValue={parseDate('2023-08-01')}
@@ -260,7 +243,7 @@ export function Content({
       </div>
       <MapComponent
         indicator={indicator}
-        regions={filteredOptions(boundary)}
+        regions={filterOpt(boundary)}
         mapDataloading={mapData?.isFetching}
         setRegion={setRegion}
         mapData={

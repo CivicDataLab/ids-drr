@@ -12,13 +12,13 @@ export const DatasetResources = ({
   fileName,
   description,
   modified,
-  tag,
+  format,
 }: {
   id: string;
   fileName: string;
   description: string;
   modified: string;
-  tag: string;
+  format: string;
 }) => {
   const [showMore, setShowMore] = useState(false);
 
@@ -30,7 +30,7 @@ export const DatasetResources = ({
             <Text fontWeight="semibold" variant="headingMd">
               {fileName}
             </Text>
-            <Tag>{tag}</Tag>
+            <Tag>{format}</Tag>
           </div>
 
           <Text variant="headingXs" fontWeight="medium">

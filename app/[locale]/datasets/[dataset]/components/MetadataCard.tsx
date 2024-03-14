@@ -15,6 +15,8 @@ export function MetadataCard({
   tags,
   licenses,
 }: Metadata) {
+  const uniqueFileTypes = new Set(fileTypes);
+  const fileTypesArray = Array.from(uniqueFileTypes);
   return (
     <div className="flex  flex-grow basis-[350px] flex-col gap-6 bg-surfaceDefault px-6 py-4 ">
       <Text variant="headingMd" fontWeight="semibold">
@@ -24,7 +26,7 @@ export function MetadataCard({
         <DataList label={'Last Updated'} value={lastUpdated || 'NA'} />
         <DataList label={'Update Frequency'} value={updateFrequency || 'NA'} />
         <DataList label={'Additional Tags'} value={tags || 'NA'} />
-        <DataList label={'File types'} value={fileTypes || 'NA'} />
+        <DataList label={'File types'} value={fileTypesArray || 'NA'} />
         <DataList label={'Licenses'} value={licenses || 'NA'} />
       </dl>
     </div>

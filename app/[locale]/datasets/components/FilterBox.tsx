@@ -8,8 +8,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@radix-ui/react-collapsible';
-import { Checkbox, Icon, Text } from 'opub-ui';
+import { Checkbox, Icon, Text, Tooltip } from 'opub-ui';
 
+import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 import styles from './Filter.module.scss';
 
@@ -52,12 +53,22 @@ export const FilterBox = ({
     });
   };
 
+  const categoryIndex = filters.findIndex((obj) =>
+    Object.prototype.hasOwnProperty.call(obj, 'category')
+  );
+
+  // If "category" exists and it's not already the first object, move it to the beginning
+  if (categoryIndex !== -1 && categoryIndex !== 0) {
+    const categoryObj = filters.splice(categoryIndex, 1)[0]; // Remove the category object
+    filters.unshift(categoryObj); // Add it to the beginning
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <Text className="text-[#8B8D98] " variant="bodyMd" fontWeight="medium">
         FILTERS
       </Text>
-      {filters.slice(1).map((item, index) => (
+      {filters.map((item, index) => (
         <div key={index}>
           {Object.entries(item).map(
             ([key, value], keyIndex) =>
@@ -80,10 +91,16 @@ export const FilterBox = ({
                       <Icon source={Icons.down} />
                     </CollapsibleTrigger>
                   </div>
-                  <CollapsibleContent className="min-w-max max-w-full px-2 pb-4">
+                  <CollapsibleContent
+                    className={cn(
+                      'min-w-max max-w-full px-2 pb-4',
+                      styles.CollapsibleContent
+                    )}
+                  >
                     <div className="mt-4 flex flex-col gap-3">
                       {value.map((itemValue, itemIndex) => (
                         <Checkbox
+                          className=" w-[100px] overflow-hidden text-ellipsis"
                           key={itemIndex}
                           name={itemValue}
                           checked={
@@ -111,7 +128,9 @@ export const FilterBox = ({
                             });
                           }}
                         >
-                          {itemValue}
+                          <Tooltip content={<Text>{itemValue}</Text>}>
+                            {itemValue}
+                          </Tooltip>
                         </Checkbox>
                       ))}
                     </div>

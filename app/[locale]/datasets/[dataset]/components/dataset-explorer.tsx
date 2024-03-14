@@ -45,9 +45,9 @@ export function Content({ slug }: { slug: string }) {
             <DatasetResources
               key={index}
               id={resource?.id}
-              fileName={resource?.file_details?.source_file_name || 'NA'}
+              fileName={resource?.title || 'NA'}
               modified={resource?.modified}
-              tag={resource?.file_details?.format || 'NA'}
+              format={resource?.file_details?.format || 'NA'}
               description={resource?.description}
             />
           ))

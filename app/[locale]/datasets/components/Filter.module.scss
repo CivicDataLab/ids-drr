@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+
   svg {
     transition: transform var(--duration-100);
   }
@@ -19,5 +19,14 @@
     svg {
       transform: rotate(-180deg);
     }
+  }
+}
+
+.CollapsibleContent {
+  label {
+    overflow: hidden;
+    width: 180px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }

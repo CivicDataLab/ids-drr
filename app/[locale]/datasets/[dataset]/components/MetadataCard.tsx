@@ -16,7 +16,7 @@ export function MetadataCard({
   licenses,
 }: Metadata) {
   return (
-    <div className="flex shrink-0 basis-[350px] flex-col gap-4 bg-surfaceDefault px-6 py-4 shadow-elementCard ">
+    <div className="flex  flex-grow basis-[350px] flex-col gap-6 bg-surfaceDefault px-6 py-4 ">
       <Text variant="headingMd" fontWeight="semibold">
         Metadata
       </Text>
@@ -39,14 +39,14 @@ export const DataList = ({
   value: string[] | string;
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-5">
       <div className="border-baseGraySlateSolid12a flex items-center gap-1 self-stretch border-b-1 py-2   ">
         <dt className="min-w-[50%]">
           <Text fontWeight="medium" variant="headingSm">
             {label} :
           </Text>
         </dt>
-        <dd className="flex flex-wrap items-center gap-1">
+        <dd className="flex  flex-wrap items-center gap-1">
           {Array.isArray(value) ? (
             value.map((tag, index) => <Tag key={index}>{tag}</Tag>)
           ) : (

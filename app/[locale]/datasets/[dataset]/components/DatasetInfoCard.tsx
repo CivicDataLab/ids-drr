@@ -34,7 +34,7 @@ export const DatasetInfoCard = ({
           </IconButton>
         </Link>
       </div>
-      <div className="shadow-card flex grow border-r-1 border-solid border-borderDisabled py-6 pl-5 pr-8">
+      <div className="shadow-card flex grow border-r-1 border-solid border-borderDisabled py-6 pl-5 pr-14">
         <div className="flex grow flex-col gap-2">
           <Text variant="headingLg" fontWeight="semibold">
             {title}
@@ -63,6 +63,15 @@ export const DatasetInfoCard = ({
             <Link href={homepage} className={cn(styles.dataSetLink)}>
               <div className="flex items-center gap-1">
                 <Text color="interactive" variant="bodyMd">
+                  Go to Github Repo
+                </Text>
+                <SourceWebsite />
+              </div>
+            </Link>
+
+            <Link href={homepage} className={cn(styles.dataSetLink)}>
+              <div className="flex items-center gap-1">
+                <Text color="interactive" variant="bodyMd">
                   Share Dataset
                 </Text>
                 <ShareDB />
@@ -70,16 +79,6 @@ export const DatasetInfoCard = ({
             </Link>
           </div>
         </div>
-      </div>
-
-      <div className="bg-surface shadow-card flex shrink-0 basis-[350px] place-content-center place-items-center rounded-1 p-3">
-        <Image
-          className="object-contain"
-          alt="dataset-icon"
-          height={'55'}
-          width="211"
-          src={logo}
-        />
       </div>
     </div>
   );

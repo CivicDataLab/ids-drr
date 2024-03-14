@@ -47,7 +47,8 @@ export function Content({ slug }: { slug: string }) {
               id={resource?.id}
               fileName={resource?.file_details?.source_file_name || 'NA'}
               modified={resource?.modified}
-              size={resource?.byte_size || 0}
+              tag={resource?.file_details?.format || 'NA'}
+              description={resource?.description}
             />
           ))
         ) : (
@@ -108,7 +109,7 @@ export function Content({ slug }: { slug: string }) {
             </Tabs>
           </div>
 
-          <div className="basis-[350px] bg-surfaceDefault">
+          <div className="h-[100%] basis-[380px] bg-surfaceDefault shadow-elementCard ">
             <MetadataCard
               lastUpdated={formatDate(explorerData?.modified) || 'NA'}
               updateFrequency={explorerData?.update_frequency || 'NA'}

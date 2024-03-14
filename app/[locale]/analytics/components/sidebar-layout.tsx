@@ -142,7 +142,7 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
       </div>
 
       <section className="mt-4">
-        {DataBasedOnBoundary.map((data: any, index: any) => (
+              {DataBasedOnBoundary.map((data: any, index: any) => (
           <div key={index} className="mb-4">
             <Text variant="headingXl" fontWeight="regular">
               {data[boundary]}
@@ -152,21 +152,21 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
                 <div className=" mr-3 basis-2/4">
                   <ProgressBar
                     size="small"
-                    customColor={RiskColorMap[data[indicator]]}
-                    value={(data[indicator] / 5) * 100}
+                    customColor={RiskColorMap[parseInt(data[indicator])]}
+                    value={(parseInt(data[indicator]) / 5) * 100}
                   />
                 </div>
-                <Text variant="heading2xl">{data?.[indicator]}</Text>/5
+                <Text variant="heading2xl">{parseInt(data?.[indicator])}</Text>/5
               </div>
-              <OtherFactorScores
+                            <OtherFactorScores
                 data={data}
                 boundary={boundary}
                 indicator={indicator}
               />
-            </div>
+                          </div>
           </div>
-        ))}
-      </section>
+                  ))}
+              </section>
       <Accordion type="single" defaultValue="time-trends" collapsible>
         <AccordionItem value="revenue-circle" className="mt-4">
           {districtData.length === 1 && (
@@ -247,7 +247,7 @@ export function OtherFactorScores({ data, boundary, indicator }: any) {
     <div key={scoreType} className="ml-3">
       <ScoreInfo
         indicator={indicator}
-        label={`${deSlugify(scoreType)} Score`}
+        label={`${deSlugify(scoreType)}`}
         value={data?.[scoreType]}
       />
     </div>

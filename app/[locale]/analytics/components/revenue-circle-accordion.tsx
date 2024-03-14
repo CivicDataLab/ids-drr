@@ -46,8 +46,8 @@ export const RevenueCircle = ({
             </Text>
             <ProgressBar
               size="small"
-              customColor={RiskColorMap[item?.[indicator]]}
-              value={(item?.[indicator] / 5) * 100}
+              customColor={RiskColorMap[parseInt(item?.[indicator])]}
+              value={(parseInt(item?.[indicator]) / 5) * 100}
             />
             <Tooltip
               content={
@@ -90,9 +90,9 @@ export const ScoreInfo = ({ label, value, indicator }: ScoreProps) => (
   <div className="mt-2">
     {label} :{' '}
     {indicator === 'risk-score' ? (
-      <strong className="pl-2">{value}/5</strong>
+      <strong className="pl-2">{parseInt(value)}/5</strong>
     ) : (
-      <strong className="pl-2">{parseFloat(value).toFixed(2)}</strong>
+      <strong className="pl-2">{(value)}</strong>
     )}
   </div>
 );

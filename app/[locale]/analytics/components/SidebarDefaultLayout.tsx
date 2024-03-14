@@ -91,7 +91,7 @@ export function SidebarDefaultLayout({
                   <DistrictBar
                     key={index}
                     district={item[boundary]}
-                    value={item[indicator] as unknown as number}
+                    value={item[indicator]}
                   />
                 )
               )}
@@ -120,8 +120,9 @@ export const DistrictBar = ({
   value,
 }: {
   district: string;
-  value: number;
+  value: string;
 }) => {
+  const score = parseInt(value);
   return (
     <div className="mb-1 flex items-center gap-2 pl-20">
       <div className=" basis-1/4">
@@ -133,8 +134,8 @@ export const DistrictBar = ({
       <div className=" basis-2/4">
         <ProgressBar
           size="small"
-          customColor={RiskColorMap[value]}
-          value={(value / 5) * 100}
+          customColor={RiskColorMap[score]}
+          value={score / 5 * 100}
         />
       </div>
     </div>

@@ -10,7 +10,7 @@ import {
 } from 'opub-ui';
 
 import { RiskColorMap } from '@/config/consts';
-import { cn, deSlugify } from '@/lib/utils';
+import { deSlugify } from '@/lib/utils';
 
 interface RevenueProps {
   revenueCircleData: any;
@@ -52,7 +52,9 @@ export const RevenueCircle = ({
             <Tooltip
               content={
                 <div className="flex flex-col px-2 py-1">
-                  <Text variant="headingXl">{item?.[indicator]} / 5 </Text>
+                  <Text variant="headingXl">
+                    {parseInt(item?.[indicator])} / 5{' '}
+                  </Text>
                   <Text>HIGH RISK</Text>
                 </div>
               }
@@ -92,7 +94,7 @@ export const ScoreInfo = ({ label, value, indicator }: ScoreProps) => (
     {indicator === 'risk-score' ? (
       <strong className="pl-2">{parseInt(value)}/5</strong>
     ) : (
-      <strong className="pl-2">{(value)}</strong>
+      <strong className="pl-2">{value}</strong>
     )}
   </div>
 );

@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import dynamic from 'next/dynamic';
 import { Spinner, Text } from 'opub-ui';
 
-import { FactorList } from './factor-list';
 import MapChart from '@/components/MapChart';
+import { FactorList } from './factor-list';
 
 export const MapComponent = ({
   indicator,

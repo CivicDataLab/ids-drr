@@ -191,7 +191,7 @@ export function Content({
           defaultValue="revenue-circle"
           label="Select Boundary"
           value={boundary || 'district'}
-          className=" basis-2/12"
+          className="grow"
           name="boundary-select"
           onChange={(e) => {
             setBoundary(e, { shallow: false });
@@ -210,7 +210,7 @@ export function Content({
           ]}
         />
 
-        <div className="z-max basis-7/12">
+        <div className="z-max grow-[3]">
           <Combobox
             key={
               boundary === 'revenue-circle'
@@ -245,21 +245,19 @@ export function Content({
           />
         </div>
 
-        <div className="basis-3/12 grow">
-          <MonthPicker
-            name="time-period-select"
-            defaultValue={parseDate('2023-08-01')}
-            label="Select Month"
-            minValue={parseDate(minDate || '2023-01-04')}
-            maxValue={parseDate(maxDate || '2023-01-04')}
-            onChange={(date) => {
-              setTimePeriod(
-                `${date.year}_${date.month < 10 ? `0${date.month}` : `${date.month}`}`,
-                { shallow: false }
-              );
-            }}
-          />
-        </div>
+        <MonthPicker
+          name="time-period-select"
+          defaultValue={parseDate('2023-08-01')}
+          label="Select Month"
+          minValue={parseDate(minDate || '2023-01-04')}
+          maxValue={parseDate(maxDate || '2023-01-04')}
+          onChange={(date) => {
+            setTimePeriod(
+              `${date.year}_${date.month < 10 ? `0${date.month}` : `${date.month}`}`,
+              { shallow: false }
+            );
+          }}
+        />
       </div>
       <MapComponent
         indicator={indicator}

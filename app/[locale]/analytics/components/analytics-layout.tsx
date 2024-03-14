@@ -9,7 +9,7 @@ import {
   parseAsString,
   useQueryState,
 } from 'next-usequerystate';
-import { Combobox, MonthPicker, Select} from 'opub-ui';
+import { Combobox, MonthPicker, Select } from 'opub-ui';
 
 import {
   ANALYTICS_DISTRICT_MAP_DATA,
@@ -118,13 +118,15 @@ export function Content({
       if (rawData) {
         for (const district in rawData) {
           const revenueCircles = rawData[district];
-          revenueCircles.forEach((circle: { "revenue-circle": string, code: string }) => {
-            RevCircleDropdownOptions.push({
-              label: circle['revenue-circle'],
-              value: circle.code,
-              type: district,
-            });
-          });
+          revenueCircles.forEach(
+            (circle: { 'revenue-circle': string; code: string }) => {
+              RevCircleDropdownOptions.push({
+                label: circle['revenue-circle'],
+                value: circle.code,
+                type: district,
+              });
+            }
+          );
         }
       }
     } else {
@@ -140,21 +142,25 @@ export function Content({
   }
 
   React.useEffect(() => {
-    if ( region && region.length > 0 && geographiesData.data && boundary ==='revenue-circle') {
+    if (
+      region &&
+      region.length > 0 &&
+      geographiesData.data &&
+      boundary === 'revenue-circle'
+    ) {
       const filteredItems = RevCircleDropdownOptions.filter((item) =>
         region.includes(item.value)
       );
 
-      setSelectedGroup([filteredItems[0]?.type ?? ''])
+      setSelectedGroup([filteredItems[0]?.type ?? '']);
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geographiesData.data]);
 
   const filterOpt = (boundary: string) => {
     if (boundary === 'revenue-circle') {
       RevCircleDropdownOptions.forEach((item: any) => {
-
         if (
           !selectedGroup.includes(item?.type || '') &&
           selectedGroup.length > 0
@@ -180,12 +186,12 @@ export function Content({
 
   return (
     <React.Fragment>
-      <div className="mb-2 flex items-start justify-between gap-4">
+      <div className="mb-2 flex items-start justify-evenly gap-3">
         <Select
           defaultValue="revenue-circle"
           label="Select Boundary"
           value={boundary || 'district'}
-          className="basis-[200px]"
+          className=" basis-2/12"
           name="boundary-select"
           onChange={(e) => {
             setBoundary(e, { shallow: false });
@@ -204,14 +210,28 @@ export function Content({
           ]}
         />
 
-        <div className=" z-max w-11/12">
+        <div className="z-max basis-7/12">
           <Combobox
-            key={boundary === 'revenue-circle' ? JSON.stringify(RevCircleDropdownOptions) : JSON.stringify(DistrictDropDownOption)}
+            key={
+              boundary === 'revenue-circle'
+                ? JSON.stringify({
+                    region: region,
+                    options: RevCircleDropdownOptions,
+                  })
+                : JSON.stringify({
+                    region: region,
+                    options: DistrictDropDownOption,
+                  })
+            }
             name="select region"
             group
             displaySelected
-            label="Select an Item"
-            list={boundary === 'revenue-circle' ? RevCircleDropdownOptions : DistrictDropDownOption}
+            label="Select one or more region"
+            list={
+              boundary === 'revenue-circle'
+                ? RevCircleDropdownOptions
+                : DistrictDropDownOption
+            }
             selectedValue={filterOpt(boundary)}
             onChange={(selectedOptions: any) => {
               const val = selectedOptions.map((option: any) => option.value);
@@ -225,7 +245,7 @@ export function Content({
           />
         </div>
 
-        <div className="basis-[300px]">
+        <div className="basis-3/12 grow">
           <MonthPicker
             name="time-period-select"
             defaultValue={parseDate('2023-08-01')}

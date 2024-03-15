@@ -1,11 +1,6 @@
 'use client';
 
 import React from 'react';
-import {
-  parseAsArrayOf,
-  parseAsString,
-  useQueryState,
-} from 'next-usequerystate';
 import { Spinner, Text } from 'opub-ui';
 
 import MapChart from '@/components/MapChart';
@@ -16,13 +11,14 @@ export const MapComponent = ({
   regions,
   mapDataloading,
   mapData,
+  setRegion,
 }: {
   indicator: string;
   regions: { label: string; value: string }[];
   mapDataloading: boolean;
   mapData: any;
+  setRegion: any;
 }) => {
-  const [_, setRegion] = useQueryState('region', parseAsArrayOf(parseAsString));
   const [map, setMap] = React.useState<any>(null);
   const mapDataFn = (value: number) => {
     let colorString;
@@ -73,8 +69,8 @@ export const MapComponent = ({
   ];
 
   const onMapClick = ({ layer }: { layer: string }) => {
-    setRegion((prev) => {
-      return [...(prev || []), layer];
+    setRegion((prev: any) => {
+      return [...prev, layer];
     });
   };
 

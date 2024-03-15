@@ -55,7 +55,7 @@ export function SidebarDefaultLayout({
       className={cn(
         'p-4 pr-8',
         'bg-surfaceDefault shadow-basicMd',
-        'shadow-inset z-1 hidden shrink-0 basis-[500px] md:block',
+        'shadow-inset z-1 hidden min-w-[500px] shrink-0 md:block',
         'border-r-1 border-solid border-borderSubdued',
         'overflow-y-auto'
       )}
@@ -135,7 +135,7 @@ export const DistrictBar = ({
         <ProgressBar
           size="small"
           customColor={RiskColorMap[score]}
-          value={score / 5 * 100}
+          value={(score / 5) * 100}
         />
       </div>
     </div>

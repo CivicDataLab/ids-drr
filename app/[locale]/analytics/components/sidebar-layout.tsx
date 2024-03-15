@@ -10,9 +10,7 @@ import {
   Vulnerability,
 } from '@/public/FactorIcons';
 import { InfoSquare } from '@/public/InfoCircle';
-
 import { useQuery } from '@tanstack/react-query';
-
 import {
   Accordion,
   AccordionContent,
@@ -28,7 +26,6 @@ import { RiskColorMap } from '@/config/consts';
 import { ANALYTICS_TIME_TRENDS } from '@/config/graphql/analaytics-queries';
 import { GraphQL } from '@/lib/api';
 import { cn, deSlugify, formatDateString } from '@/lib/utils';
-
 import { RevenueCircle, ScoreInfo } from './revenue-circle-accordion';
 import styles from './styles.module.scss';
 import { TimeTrends } from './time-trends';
@@ -107,7 +104,7 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
       className={cn(
         'p-4',
         'bg-surfaceDefault shadow-basicMd',
-        'shadow-inset z-1 hidden shrink-0 basis-[500px] md:block',
+        'shadow-inset z-1 hidden min-w-[500px] shrink-0 md:block',
         'overflow-y-auto border-r-1 border-solid border-borderSubdued'
       )}
     >
@@ -142,7 +139,7 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
       </div>
 
       <section className="mt-4">
-              {DataBasedOnBoundary.map((data: any, index: any) => (
+        {DataBasedOnBoundary.map((data: any, index: any) => (
           <div key={index} className="mb-4">
             <Text variant="headingXl" fontWeight="regular">
               {data[boundary]}
@@ -156,17 +153,18 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
                     value={(parseInt(data[indicator]) / 5) * 100}
                   />
                 </div>
-                <Text variant="heading2xl">{parseInt(data?.[indicator])}</Text>/5
+                <Text variant="heading2xl">{parseInt(data?.[indicator])}</Text>
+                /5
               </div>
-                            <OtherFactorScores
+              <OtherFactorScores
                 data={data}
                 boundary={boundary}
                 indicator={indicator}
               />
-                          </div>
+            </div>
           </div>
-                  ))}
-              </section>
+        ))}
+      </section>
       <Accordion type="single" defaultValue="time-trends" collapsible>
         <AccordionItem value="revenue-circle" className="mt-4">
           {districtData.length === 1 && (

@@ -99,7 +99,7 @@ function SidePaneLayout() {
 
   if (!sidePaneData.isFetched)
     return (
-      <div className="grid  basis-[500px] place-content-center border-solid border-borderSubdued bg-surfaceDefault shadow-basicMd">
+      <div className="grid min-w-[500px] place-content-center border-solid border-borderSubdued bg-surfaceDefault shadow-basicMd">
         <Spinner color="highlight" />
         <Text>Loading...</Text>
       </div>

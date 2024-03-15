@@ -246,19 +246,21 @@ export function Content({
           />
         </div>
 
-        <MonthPicker
-          name="time-period-select"
-          defaultValue={parseDate('2023-08-01')}
-          label="Select Month"
-          minValue={parseDate(minDate || '2023-01-04')}
-          maxValue={parseDate(maxDate || '2023-01-04')}
-          onChange={(date) => {
-            setTimePeriod(
-              `${date.year}_${date.month < 10 ? `0${date.month}` : `${date.month}`}`,
-              { shallow: false }
-            );
-          }}
-        />
+        <div className="basis-48">
+          <MonthPicker
+            name="time-period-select"
+            defaultValue={parseDate('2023-08-01')}
+            label="Select Month"
+            minValue={parseDate(minDate || '2023-01-04')}
+            maxValue={parseDate(maxDate || '2023-01-04')}
+            onChange={(date) => {
+              setTimePeriod(
+                `${date.year}_${date.month < 10 ? `0${date.month}` : `${date.month}`}`,
+                { shallow: false }
+              );
+            }}
+          />
+        </div>
       </div>
       <MapComponent
         indicator={indicator}

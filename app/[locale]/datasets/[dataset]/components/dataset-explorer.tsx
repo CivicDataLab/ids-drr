@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Breadcrumbs, Tab, TabList, TabPanel, Tabs, Text } from 'opub-ui';
+import { TabList, TabPanel, Tabs, Text } from 'opub-ui';
 
 import { datasetsExplorerPageHeader } from '@/config/consts';
 import { DATASET_BY_SLUG } from '@/config/graphql/dataset-queries';
@@ -19,21 +19,6 @@ export function Content({ slug }: { slug: string }) {
   );
 
   const explorerData = data?.dataset_by_slug;
-
-  const breadcrumbs = [
-    {
-      label: 'Assam Homepage',
-      href: '/',
-    },
-    {
-      label: 'Datasets',
-      href: `/datasets`,
-    },
-    {
-      label: `${explorerData?.title || 'NA'}`,
-      href: slug,
-    },
-  ];
 
   const tabContent = [
     {
@@ -62,10 +47,6 @@ export function Content({ slug }: { slug: string }) {
       label: 'Data Resources',
       value: 'data-resources',
     },
-    // {
-    // label: 'Visualizations',
-    // value: 'visualizations',
-    // },
   ];
 
   return (
@@ -80,9 +61,6 @@ export function Content({ slug }: { slug: string }) {
           description={explorerData?.description || 'NA'}
           source={explorerData?.catalog?.organization?.title || 'NA'}
           homepage={explorerData?.catalog?.organization?.homepage || '#'}
-          logo={
-            explorerData?.catalog?.organization?.logo || '/logo/datasetLogo.png'
-          }
         />
 
         <div className="bg-surface flex items-start gap-3 ">

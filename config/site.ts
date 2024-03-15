@@ -44,6 +44,10 @@ export const backendUrl = {
   datasets: 'https://opub-backend.civicdatalab.in',
 };
 
+export const elasticSearchParams = {
+  default: 'facets/?from=0&size=10&sort=desc&sort_by=relevance',
+};
+
 export const navbarConfig = {
   homeUrl: '/',
   links: [

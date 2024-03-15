@@ -1,6 +1,6 @@
 import { Datasets, FilterProps } from '@/types';
 
-import { backendUrl } from '@/config/site';
+import { backendUrl, elasticSearchParams } from '@/config/site';
 import { getData } from '@/lib/api';
 import { Content } from './components/dataset-layout';
 
@@ -11,8 +11,10 @@ export default async function Home({
 }) {
   const params = new URLSearchParams(searchParams);
   const urlToFetch = params
-    ? `${backendUrl.datasets}/facets/?from=0&size=10&sort=desc&sort_by=relevance&${decodeURIComponent(params.toString())}`
-    : `${backendUrl.datasets}/facets/?from=0&size=10&sort=desc&sort_by=relevance`;
+    ? `${backendUrl.datasets}/${elasticSearchParams.default}&${decodeURIComponent(params.toString())}`
+    : `${backendUrl.datasets}/${elasticSearchParams.default}`;
+  console.log('🚀 ~ urlToFetch:', urlToFetch);
+
   const datasetData = await getData(urlToFetch);
 
   const filters: FilterProps[] = Object.keys(datasetData?.aggregations).map(

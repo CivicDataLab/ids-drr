@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Button, Tag, Text } from 'opub-ui';
+import { Tag, Text } from 'opub-ui';
 
 import { DatasetSource, LastUpdated, UpdateFreq } from '@/config/consts';
 import { formatDate } from '@/lib/utils';
@@ -37,13 +37,14 @@ export const DatasetCard = ({
         key={keyIndex}
         className="rounded-1 bg-surfaceDefault p-6 shadow-elementCard "
       >
-        <div className="flex items-start gap-6 ">
-          <div className="flex flex-shrink-0 basis-[350px] flex-col flex-wrap items-start gap-3 p-0">
+        <div className="flex flex-wrap items-start gap-6 ">
+          <div className="flex flex-1 flex-col flex-wrap items-start gap-3 p-0">
             <Text
               className=" text-textSubdued "
               variant="headingLg"
+              as="p"
+              breakWord
               fontWeight="semibold"
-              truncate
             >
               {title}
             </Text>
@@ -86,11 +87,11 @@ export const DatasetCard = ({
             </span>
           </div>
 
-          <div className="flex max-h-[150px] min-h-[150px] flex-col gap-4 overflow-hidden">
+          <div className="flex max-h-[150px] min-h-[150px] flex-1 flex-col gap-4 overflow-hidden">
             <Text
               className="line-clamp-3"
               variant="bodyMd"
-              fontWeight="regular"
+              as="p"
               color="default"
             >
               {description}

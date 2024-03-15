@@ -226,6 +226,7 @@ export function Content({
             name="select region"
             group
             displaySelected
+            placeholder={`Enter ${boundary === 'district' ? 'District' : 'Revenue Circle'} name...`}
             label="Select one or more region"
             list={
               boundary === 'revenue-circle'
@@ -240,7 +241,7 @@ export function Content({
               );
 
               setSelectedGroup(group);
-              setRegion(val, { shallow: false });
+              setRegion(val);
             }}
           />
         </div>
@@ -263,7 +264,6 @@ export function Content({
         indicator={indicator}
         regions={filterOpt(boundary)}
         mapDataloading={mapData?.isFetching}
-        setRegion={setRegion}
         mapData={
           boundary === 'district'
             ? mapData?.data?.districtMapData

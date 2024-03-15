@@ -1,25 +1,35 @@
 'use client';
 
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import {
+  parseAsArrayOf,
+  parseAsString,
+  useQueryState,
+} from 'next-usequerystate';
 import { Spinner, Text } from 'opub-ui';
 
-import MapChart from '@/components/MapChart';
 import { FactorList } from './factor-list';
+import MapChart from './MapChart';
+import { SomeComponent } from './SomeComponent';
 
 export const MapComponent = ({
   indicator,
   regions,
   mapDataloading,
-  setRegion,
   mapData,
 }: {
   indicator: string;
   regions: { label: string; value: string }[];
   mapDataloading: boolean;
-  setRegion: any;
   mapData: any;
 }) => {
+  const [region, setRegion] = useQueryState(
+    'region',
+    parseAsArrayOf(parseAsString)
+  );
   const [map, setMap] = React.useState<any>(null);
+  const [layer, setSelectedLayer] = React.useState<any>(null);
   const mapDataFn = (value: number) => {
     let colorString;
     switch (value) {
@@ -67,6 +77,13 @@ export const MapComponent = ({
       color: '#4575b4',
     },
   ];
+  console.log('outside function ~ regions:', region);
+
+  const onMapClick = ({ layer, selectedRegion = region }: any) => {
+    console.log('onMapClick function ~ regions:', layer, selectedRegion);
+    const regions = [...(selectedRegion ? selectedRegion : []), layer];
+    setRegion(regions);
+  };
 
   React.useEffect(() => {
     const regionsArray: string[] = [];
@@ -81,7 +98,6 @@ export const MapComponent = ({
       map.eachLayer((layer: any) => {
         const regionName = layer.feature?.properties.name;
         const regionCode = layer.feature?.properties.code;
-
         const riskValue = layer.feature?.properties?.[indicator];
 
         if (regionsArray.includes(regionCode)) {
@@ -135,6 +151,7 @@ export const MapComponent = ({
   return (
     <div className=" relative h-[90%] w-full py-4">
       <FactorList />
+      <SomeComponent click={(layer: any) => onMapClick({ layer: layer })} />
       <MapChart
         features={mapData?.features}
         mapZoom={7.7}
@@ -144,9 +161,11 @@ export const MapComponent = ({
         minZoom={6}
         maxZoom={8}
         mapDataFn={mapDataFn}
-        click={(layer) =>
-          setRegion([layer?.feature?.properties?.code], { shallow: false })
-        }
+        click={(layer) => {
+          onMapClick({
+            layer: layer.feature?.properties.code,
+          });
+        }}
         fillOpacity={1}
         setMap={setMap}
         resetZoom

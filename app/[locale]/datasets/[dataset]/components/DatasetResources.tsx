@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import Link from 'next/link';
-import { Button, ButtonGroup, Tag, Text } from 'opub-ui';
-import { TRUE } from 'sass';
+import { Button, Tag, Text } from 'opub-ui';
 
 import { backendUrl } from '@/config/site';
-import { cn, formatDate } from '@/lib/utils';
-import styles from './styles.module.scss';
+import { formatDate } from '@/lib/utils';
 
 export const DatasetResources = ({
   id,
@@ -38,19 +35,17 @@ export const DatasetResources = ({
           </Text>
         </div>
 
-        <Button className="w-[136px] bg-[#71E57D] text-baseGraySlateSolid12 shadow-insetButton ">
-          <Link href={`${backendUrl.datasets}/download/${parseInt(id)}/`}>
-            Download
-          </Link>
+        <Button
+          onClick={() =>
+            (window.location.href = `${backendUrl.datasets}/download/${parseInt(id)}/`)
+          }
+          className="w-[136px] bg-[#71E57D] text-baseGraySlateSolid12 shadow-insetButton "
+        >
+          Download
         </Button>
       </div>
       <div className="gap-2 pl-2">
-        <Text
-          className={cn(styles[`line-clamp-${showMore ? 'none' : '1'}`])}
-          variant="headingXs"
-          fontWeight="medium"
-          color="default"
-        >
+        <Text variant="headingXs" fontWeight="medium" color="default">
           {showMore ? description : `${description.substring(0, 40)}`}
         </Text>
 

@@ -10,6 +10,8 @@ interface LineOptions {
   yAxis: {
     type: string;
     minInterval: number;
+    min: number;
+    max: number;
   };
   legend: {
     data: string[];
@@ -42,6 +44,8 @@ export function TimeTrends({
     yAxis: {
       type: 'value',
       minInterval: 1,
+      min: 0,
+      max: 5,
     },
     legend: {
       data: [],

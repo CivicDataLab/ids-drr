@@ -212,17 +212,6 @@ export function Content({
 
         <div className="z-max grow-[3]">
           <Combobox
-            key={
-              boundary === 'revenue-circle'
-                ? JSON.stringify({
-                    region: region,
-                    options: RevCircleDropdownOptions,
-                  })
-                : JSON.stringify({
-                    region: region,
-                    options: DistrictDropDownOption,
-                  })
-            }
             name="select region"
             group
             displaySelected

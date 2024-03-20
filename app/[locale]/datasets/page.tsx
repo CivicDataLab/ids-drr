@@ -10,10 +10,17 @@ export default async function Home({
   searchParams: { [key: string]: string };
 }) {
   const params = new URLSearchParams(searchParams);
+  // Check if the params contain 'search'
+  if (params.has('search')) {
+    // Replace 'search' with 'q' as the elastic search needs the param to be it
+    const searchValue = params.get('search') || '';
+    params.set('q', searchValue);
+    params.delete('search');
+  }
+
   const urlToFetch = params
     ? `${backendUrl.datasets}/${elasticSearchParams.default}&${decodeURIComponent(params.toString())}`
     : `${backendUrl.datasets}/${elasticSearchParams.default}`;
-  console.log('🚀 ~ urlToFetch:', urlToFetch);
 
   const datasetData = await getData(urlToFetch);
 
@@ -36,7 +43,7 @@ export default async function Home({
         logo: item?.org_logo || 'NA',
       },
       metaData: {
-        lastUpdated: item._source?.last_updated || 'NA',
+        lastUpdated: item._source?.modified || 'NA',
         updateFrequency: item._source?.update_frequency || 'NA',
         period: [item._source?.period_from, item._source?.period_to],
         fileTypes: item?._source?.format || '',

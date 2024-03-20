@@ -1,7 +1,5 @@
 import Link from 'next/link';
-import { ShareDB } from '@/public/ShareDB';
-import { SourceWebsite } from '@/public/sourceWebsite';
-import { IconButton, Text } from 'opub-ui';
+import { Icon, IconButton, Text } from 'opub-ui';
 
 import { DatasetSource, DatasetsURL } from '@/config/consts';
 import Icons from '@/components/icons';
@@ -51,7 +49,7 @@ export const DatasetInfoCard = ({
                 <Text color="interactive" variant="bodyMd">
                   Visit source website
                 </Text>
-                <SourceWebsite />
+                <Icon source={Icons.externalLink} color="interactive" />
               </div>
             </Link>
 
@@ -60,7 +58,7 @@ export const DatasetInfoCard = ({
                 <Text color="interactive" variant="bodyMd">
                   Go to Github Repo
                 </Text>
-                <SourceWebsite />
+                <Icon source={Icons.externalLink} color="interactive" />
               </div>
             </Link>
 
@@ -68,7 +66,7 @@ export const DatasetInfoCard = ({
               <Text color="interactive" variant="bodyMd">
                 Share Dataset
               </Text>
-              <ShareDB />
+              <Icon source={Icons.share} color="interactive" />
             </div>
           </div>
         </div>

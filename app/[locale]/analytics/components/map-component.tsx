@@ -131,7 +131,7 @@ export const MapComponent = ({
 
   if (mapDataloading)
     return (
-      <div className="grid h-full place-content-center">
+      <div className="flex h-full flex-col place-content-center items-center">
         <Spinner color="highlight" />
         <Text>Loading...</Text>
       </div>

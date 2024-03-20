@@ -20,8 +20,8 @@ export const DatasetResources = ({
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="flex h-[110px] flex-col gap-1 p-2 ">
-      <div className="flex flex-row items-start justify-between gap-5 self-stretch pl-2">
+    <div className="mb-4 flex flex-col gap-1">
+      <div className="flex flex-row items-start justify-between gap-5 self-stretch">
         <div className="flex w-[356px] flex-col gap-1">
           <div className="flex gap-3">
             <Text fontWeight="semibold" variant="headingMd">
@@ -44,13 +44,18 @@ export const DatasetResources = ({
           Download
         </Button>
       </div>
-      <div className="gap-2 pl-2">
-        <Text variant="headingXs" fontWeight="medium" color="default">
-          {showMore ? description : `${description.substring(0, 40)}`}
+      <div className="flex w-[320px] flex-col">
+        <Text
+          className=" block w-[320px]"
+          variant="headingXs"
+          fontWeight="medium"
+          color="default"
+          truncate={!showMore}
+        >
+          {description}
         </Text>
-
         <Button
-          className="w-[120px]"
+          className="self-end"
           onClick={() => setShowMore(!showMore)}
           variant="interactive"
           size="slim"

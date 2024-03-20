@@ -2,12 +2,12 @@
 
 // import { graphql } from '@/gql';
 import React from 'react';
+import SearchSvg from '@/public/Search';
 import { Datasets, FilterProps } from '@/types';
 import { useQueryState } from 'next-usequerystate';
-import { IconButton, Select, Text, TextField } from 'opub-ui';
+import { Button, SearchInput, Select, Text } from 'opub-ui';
 
 import { datasetsPageHeader } from '@/config/consts';
-import Icons from '@/components/icons';
 import { DatasetCard } from './DatasetCard';
 import { FilterBox } from './FilterBox';
 
@@ -22,9 +22,10 @@ export function Content({
   filters: FilterProps[];
   selectedFilters: FilterProps[];
 }) {
-  const [queryString, setQueryString] = useQueryState('q');
+  const [queryString, setQueryString] = useQueryState('search');
 
   const [searchValue, setSearchValue] = React.useState('');
+
   return (
     <div className="container mb-6 grid gap-4">
       <div className="mt-6 pl-5">
@@ -46,25 +47,23 @@ export function Content({
 
           <div className="flex w-4/5 flex-row items-stretch justify-between gap-8  ">
             <div className="flex h-[36px] w-[700px] items-center justify-start gap-2 pl-6">
-              <div className="flex-1">
-                <TextField
-                  placeholder="Search by title, keyword, source, etc."
-                  name="Search"
+              <form className="flex-1">
+                <SearchInput
+                  name="search"
+                  placeholder="Search by title, description..."
+                  onSubmit={() => setQueryString('', { shallow: false })}
                   label="Search"
-                  value={searchValue}
                   onChange={(value) => setSearchValue(value)}
-                  type="search"
-                  labelHidden
+                  defaultValue={queryString || ''}
+                  onClear={() => setQueryString('', { shallow: false })}
                 />
-              </div>
-              <IconButton
-                onClick={() => setQueryString(searchValue , {shallow : false})}
-                color="subdued"
-                icon={Icons.search}
-                size="large"
+              </form>
+              <Button
+                onClick={() => setQueryString(searchValue, { shallow: false })}
+                className="rounded-1 bg-baseIndigoSolid1 p-1 hover:bg-baseIndigoSolid1"
               >
-                Search
-              </IconButton>
+                <SearchSvg />
+              </Button>
             </div>
             <div className="flex w-[290px] flex-row items-center justify-end  gap-2 ">
               <Text

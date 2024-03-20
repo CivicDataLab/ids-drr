@@ -13,6 +13,7 @@ import { Button, Divider, ProgressBar, Text } from 'opub-ui';
 
 import { RiskColorMap } from '@/config/consts';
 import { cn, deSlugify } from '@/lib/utils';
+import { Download } from './download';
 
 export function SidebarDefaultLayout({
   chartData,
@@ -69,9 +70,7 @@ export function SidebarDefaultLayout({
           {IconMap[indicator || 'risk-score']}
           {deSlugify(indicator)}
         </Text>
-        <Button variant="success" kind="secondary">
-          Download Report
-        </Button>
+        <Download/>
       </div>
 
       <Divider className="mt-2" />

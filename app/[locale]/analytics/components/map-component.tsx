@@ -10,14 +10,14 @@ export const MapComponent = ({
   indicator,
   regions,
   mapDataloading,
-  setRegion,
   mapData,
+  setRegion,
 }: {
   indicator: string;
   regions: { label: string; value: string }[];
   mapDataloading: boolean;
-  setRegion: any;
   mapData: any;
+  setRegion: any;
 }) => {
   const [map, setMap] = React.useState<any>(null);
   const mapDataFn = (value: number) => {
@@ -68,6 +68,12 @@ export const MapComponent = ({
     },
   ];
 
+  const onMapClick = ({ layer }: { layer: string }) => {
+    setRegion((prev: any) => {
+      return [...prev, layer];
+    });
+  };
+
   React.useEffect(() => {
     const regionsArray: string[] = [];
     regions?.forEach((region) => {
@@ -81,7 +87,6 @@ export const MapComponent = ({
       map.eachLayer((layer: any) => {
         const regionName = layer.feature?.properties.name;
         const regionCode = layer.feature?.properties.code;
-
         const riskValue = layer.feature?.properties?.[indicator];
 
         if (regionsArray.includes(regionCode)) {
@@ -126,7 +131,7 @@ export const MapComponent = ({
 
   if (mapDataloading)
     return (
-      <div className="grid h-full place-content-center">
+      <div className="flex h-full flex-col place-content-center items-center">
         <Spinner color="highlight" />
         <Text>Loading...</Text>
       </div>
@@ -145,7 +150,9 @@ export const MapComponent = ({
         maxZoom={8}
         mapDataFn={mapDataFn}
         click={(layer) =>
-          setRegion([layer?.feature?.properties?.code], { shallow: false })
+          onMapClick({
+            layer: layer.feature?.properties.code,
+          })
         }
         fillOpacity={1}
         setMap={setMap}

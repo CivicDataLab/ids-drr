@@ -30,6 +30,7 @@ import {
   IconReport,
   IconReportSearch,
   IconSearch,
+  IconShare,
   IconSquareRoundedArrowRight,
   IconSquareRoundedChevronLeftFilled,
   IconUserCog,
@@ -60,7 +61,7 @@ export const Icons: {
   scheme: IconReportSearch,
   cardLink: IconSquareRoundedArrowRight,
   info: IconInfoCircleFilled,
-
+  share: IconShare,
   construction: IconBarrierBlock,
   link: IconLink,
   collapse: IconLayoutSidebarLeftCollapse,

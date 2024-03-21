@@ -1,26 +1,19 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { ShareDB } from '@/public/ShareDB';
-import { SourceWebsite } from '@/public/sourceWebsite';
-import { IconButton, Text } from 'opub-ui';
+import { Icon, IconButton, Text } from 'opub-ui';
 
 import { DatasetSource, DatasetsURL } from '@/config/consts';
-import { cn } from '@/lib/utils';
 import Icons from '@/components/icons';
-import styles from './styles.module.scss';
 
 export const DatasetInfoCard = ({
   title,
   description,
   source,
   homepage,
-  logo,
 }: {
   title: string;
   description: string;
   source: string;
   homepage: string;
-  logo: string;
 }) => {
   return (
     <div
@@ -28,7 +21,7 @@ export const DatasetInfoCard = ({
       className="flex items-center gap-0 self-stretch bg-surfaceDefault p-0 shadow-basicSm"
     >
       <div className="pb-36 pl-5 pt-4">
-        <Link href={DatasetsURL} className={cn(styles.dataSetLink)}>
+        <Link href={DatasetsURL}>
           <IconButton color="subdued" icon={Icons.left} size="large">
             Left
           </IconButton>
@@ -51,32 +44,30 @@ export const DatasetInfoCard = ({
             {description}
           </Text>
           <div className="flex items-center gap-6">
-            <Link href={homepage} className={cn(styles.dataSetLink)}>
+            <Link href={homepage}>
               <div className="flex items-center gap-1">
                 <Text color="interactive" variant="bodyMd">
                   Visit source website
                 </Text>
-                <SourceWebsite />
+                <Icon source={Icons.externalLink} color="interactive" />
               </div>
             </Link>
 
-            <Link href={homepage} className={cn(styles.dataSetLink)}>
+            <Link href={homepage}>
               <div className="flex items-center gap-1">
                 <Text color="interactive" variant="bodyMd">
                   Go to Github Repo
                 </Text>
-                <SourceWebsite />
+                <Icon source={Icons.externalLink} color="interactive" />
               </div>
             </Link>
 
-            <Link href={homepage} className={cn(styles.dataSetLink)}>
-              <div className="flex items-center gap-1">
-                <Text color="interactive" variant="bodyMd">
-                  Share Dataset
-                </Text>
-                <ShareDB />
-              </div>
-            </Link>
+            <div className="flex items-center gap-1">
+              <Text color="interactive" variant="bodyMd">
+                Share Dataset
+              </Text>
+              <Icon source={Icons.share} color="interactive" />
+            </div>
           </div>
         </div>
       </div>

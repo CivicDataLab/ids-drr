@@ -10,15 +10,12 @@ import {
   Vulnerability,
 } from '@/public/FactorIcons';
 import { InfoSquare } from '@/public/InfoCircle';
-
 import { useQuery } from '@tanstack/react-query';
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
   Divider,
   ProgressBar,
   ShareDialog,
@@ -32,6 +29,7 @@ import { ANALYTICS_TIME_TRENDS } from '@/config/graphql/analaytics-queries';
 import { GraphQL } from '@/lib/api';
 import { navigateEnd } from '@/lib/navigation';
 import { cn, deSlugify, formatDateString } from '@/lib/utils';
+import { DownloadReport } from './download-report';
 import { RevenueCircle, ScoreInfo } from './revenue-circle-accordion';
 import styles from './styles.module.scss';
 import { TimeTrends } from './time-trends';
@@ -140,7 +138,7 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
       className={cn(
         'p-4',
         'bg-surfaceDefault shadow-basicMd',
-        'shadow-inset z-1 hidden shrink-0 basis-[500px] md:block',
+        'shadow-inset z-1 hidden min-w-[500px] shrink-0 md:block',
         'overflow-y-auto border-r-1 border-solid border-borderSubdued'
       )}
     >
@@ -153,21 +151,7 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
           {IconMap[indicatorIcon || 'risk-score']}
           {deSlugify(indicatorIcon)}
         </Text>
-        <ShareDialog
-          kind="secondary"
-          size="medium"
-          image={svgURL}
-          loading={isLoading}
-          alt="SVG"
-          title="Share"
-          props={{
-            height: isDesktop ? 285 : 175,
-          }}
-          onOpen={generateImage}
-          onDownload={() => downloadFile(svgURL, 'Chart', () => navigateEnd())}
-        >
-          Download Report
-        </ShareDialog>
+        <DownloadReport />
       </header>
       <Divider className="mt-2" />
       {(data.length === 1 || districtData.length === 1) && (
@@ -201,7 +185,8 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
                     value={(parseInt(data[indicator]) / 5) * 100}
                   />
                 </div>
-                <Text variant="heading2xl">{parseInt(data?.[indicator])}</Text>/5
+                <Text variant="heading2xl">{parseInt(data?.[indicator])}</Text>
+                /5
               </div>
               <OtherFactorScores
                 data={data}

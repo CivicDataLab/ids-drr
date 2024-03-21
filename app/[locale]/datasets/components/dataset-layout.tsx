@@ -1,12 +1,13 @@
 'use client';
 
 // import { graphql } from '@/gql';
-import SearchSvg from '@/public/searchSvg';
+import React from 'react';
+import SearchSvg from '@/public/Search';
 import { Datasets, FilterProps } from '@/types';
-import { IconButton, Select, Text, TextField } from 'opub-ui';
+import { useQueryState } from 'next-usequerystate';
+import { Button, SearchInput, Select, Text } from 'opub-ui';
 
 import { datasetsPageHeader } from '@/config/consts';
-import { Icons } from '@/components/icons';
 import { DatasetCard } from './DatasetCard';
 import { FilterBox } from './FilterBox';
 
@@ -21,6 +22,10 @@ export function Content({
   filters: FilterProps[];
   selectedFilters: FilterProps[];
 }) {
+  const [queryString, setQueryString] = useQueryState('search');
+
+  const [searchValue, setSearchValue] = React.useState('');
+
   return (
     <div className="container mb-6 grid gap-4">
       <div className="mt-6 pl-5">
@@ -28,9 +33,8 @@ export function Content({
       </div>
 
       <div className=" container  ">
-        {/* <div className=" mr-6 flex items-center justify-end gap-20 border-b-1 bg-[#96E79E] px-8 py-3 "> */}
         <div className="mr-6 flex flex-row items-center justify-end gap-6 border-b-1 bg-[#96E79E] px-8 py-3">
-          <div className="flex w-1/5 justify-end">
+          <div className="flex w-1/5 justify-start">
             <Text
               className="shrink-0"
               variant="bodyLg"
@@ -43,18 +47,23 @@ export function Content({
 
           <div className="flex w-4/5 flex-row items-stretch justify-between gap-8  ">
             <div className="flex h-[36px] w-[700px] items-center justify-start gap-2 pl-6">
-              <div className="flex-1">
-                <TextField
-                  placeholder="Search by title, keyword, source, etc."
-                  name="Search"
+              <form className="flex-1">
+                <SearchInput
+                  name="search"
+                  placeholder="Search by title, description..."
+                  onSubmit={() => setQueryString('', { shallow: false })}
                   label="Search"
-                  type="search"
-                  labelHidden
+                  onChange={(value) => setSearchValue(value)}
+                  defaultValue={queryString || ''}
+                  onClear={() => setQueryString('', { shallow: false })}
                 />
-              </div>
-              <div className="h-[35px] w-[36px] rounded-1 bg-[#F9F9FB] ">
+              </form>
+              <Button
+                onClick={() => setQueryString(searchValue, { shallow: false })}
+                className="rounded-1 bg-baseIndigoSolid1 p-1 hover:bg-baseIndigoSolid1"
+              >
                 <SearchSvg />
-              </div>
+              </Button>
             </div>
             <div className="flex w-[290px] flex-row items-center justify-end  gap-2 ">
               <Text
@@ -68,7 +77,6 @@ export function Content({
               <Select
                 defaultValue="SORT BY :"
                 className="w-[150px]"
-                // className=" flex w-fit flex-row items-center justify-end gap-2 "
                 label=""
                 name="Sort-by"
                 options={[
@@ -85,7 +93,6 @@ export function Content({
             </div>
           </div>
         </div>
-        {/* </div> */}
       </div>
 
       <div className="container flex gap-10">

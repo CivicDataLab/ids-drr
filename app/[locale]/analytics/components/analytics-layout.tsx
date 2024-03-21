@@ -180,7 +180,7 @@ export function Content({
       const filteredDistrictOptions = DistrictDropDownOption?.filter((option) =>
         region?.includes(option.value)
       );
-      return filteredDistrictOptions;
+            return filteredDistrictOptions;
     }
   };
 
@@ -191,7 +191,7 @@ export function Content({
           defaultValue="revenue-circle"
           label="Select Boundary"
           value={boundary || 'district'}
-          className="grow"
+          className="min-w-36 grow"
           name="boundary-select"
           onChange={(e) => {
             setBoundary(e, { shallow: false });
@@ -212,20 +212,11 @@ export function Content({
 
         <div className="z-max grow-[3]">
           <Combobox
-            key={
-              boundary === 'revenue-circle'
-                ? JSON.stringify({
-                    region: region,
-                    options: RevCircleDropdownOptions,
-                  })
-                : JSON.stringify({
-                    region: region,
-                    options: DistrictDropDownOption,
-                  })
-            }
+            key={JSON.stringify(filterOpt(boundary))}
             name="select region"
             group
             displaySelected
+            placeholder={`Enter ${boundary === 'district' ? 'District' : 'Revenue Circle'} name...`}
             label="Select one or more region"
             list={
               boundary === 'revenue-circle'
@@ -240,7 +231,7 @@ export function Content({
               );
 
               setSelectedGroup(group);
-              setRegion(val, { shallow: false });
+              setRegion(val);
             }}
           />
         </div>

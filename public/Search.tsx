@@ -1,4 +1,4 @@
-export default function SearchSvg({ ...props }) {
+export default function Search({ ...props }) {
   return (
     <div
       style={{

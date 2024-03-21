@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import {
   Ellipse,
   Exposure,
@@ -9,10 +10,12 @@ import {
   RiskScore,
   Vulnerability,
 } from '@/public/FactorIcons';
-import { Button, Divider, ProgressBar, Text } from 'opub-ui';
+import { Divider, Icon, ProgressBar, Text } from 'opub-ui';
 
 import { RiskColorMap } from '@/config/consts';
 import { cn, deSlugify } from '@/lib/utils';
+import Icons from '@/components/icons';
+import { DownloadReport } from './download-report';
 
 export function SidebarDefaultLayout({
   chartData,
@@ -55,7 +58,7 @@ export function SidebarDefaultLayout({
       className={cn(
         'p-4 pr-8',
         'bg-surfaceDefault shadow-basicMd',
-        'shadow-inset z-1 hidden shrink-0 basis-[500px] md:block',
+        'shadow-inset z-1 hidden w-[500px] shrink-0 md:block',
         'border-r-1 border-solid border-borderSubdued',
         'overflow-y-auto'
       )}
@@ -69,9 +72,7 @@ export function SidebarDefaultLayout({
           {IconMap[indicator || 'risk-score']}
           {deSlugify(indicator)}
         </Text>
-        <Button variant="success" kind="secondary">
-          Download Report
-        </Button>
+        <DownloadReport />
       </div>
 
       <Divider className="mt-2" />
@@ -135,7 +136,7 @@ export const DistrictBar = ({
         <ProgressBar
           size="small"
           customColor={RiskColorMap[score]}
-          value={score / 5 * 100}
+          value={(score / 5) * 100}
         />
       </div>
     </div>
@@ -157,18 +158,44 @@ export const IndicatorDescription = ({
     exposure: <Exposure color={'#000000'} />,
     'government-response': <GovtResponse color={'#000000'} />,
   };
+
+  const CategoryMap: { [key: string]: string } = {
+    'flood-hazard': 'Hazard',
+    'government-response': 'Government Response',
+    exposure: 'Exposure',
+    vulnerability: 'Vulnerability',
+  };
+
   return (
     <div className="flex flex-col">
       <div className="mb-2 mt-3 flex items-center">
-        {IconMap[slug] || (
-          <Ellipse color="#000000" />
-          // null
-        )}
+        {IconMap[slug] || <Ellipse color="#000000" />}
         <Text fontWeight="bold" variant="headingMd" className="pl-2">
           {title}
         </Text>
+        {Object.keys(CategoryMap).includes(slug) && (
+          <Link
+            className="ml-auto flex gap-2"
+            href={`/datasets/?category=${CategoryMap[slug]}`}
+          >
+            <Icon source={Icons.link} color="interactive" />
+            <Text color="interactive">Link to the datasets</Text>
+          </Link>
+        )}
       </div>
-      <div>{desc}</div>
+      <Text>{desc}</Text>
+      {slug === 'government-response' && (
+        <a
+          className="mt-2 flex gap-2"
+          target="_blank"
+          href={
+            'https://superset.civicdatalab.in/superset/dashboard/flood-tenders-assam/ '
+          }
+        >
+          <Text color="interactive">View procurement data dashboard</Text>
+          <Icon source={Icons.externalLink} color="interactive" />
+        </a>
+      )}
     </div>
   );
 };

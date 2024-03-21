@@ -22,7 +22,7 @@ export const FilterBox = ({
   selectedFilters: any;
 }) => {
   const router = useRouter();
-  const [selectedFilter, setSelectedFilter] = React.useState<{
+  const [, setSelectedFilter] = React.useState<{
     [key: string]: string[];
   }>({});
 

@@ -1,4 +1,6 @@
+import React from 'react';
 import { Datasets, FilterProps } from '@/types';
+import { Spinner, Text } from 'opub-ui';
 
 import { backendUrl, elasticSearchParams } from '@/config/site';
 import { getData } from '@/lib/api';
@@ -9,17 +11,13 @@ export default async function Home({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  const params = new URLSearchParams(searchParams);
-  // Check if the params contain 'search'
-  if (params.has('search')) {
-    // Replace 'search' with 'q' as the elastic search needs the param to be it
-    const searchValue = params.get('search') || '';
-    params.set('q', searchValue);
-    params.delete('search');
-  }
+  const params = Object.entries(searchParams)
+    .filter(([, val]) => val != null && val != undefined)
+    .map(([key, val]) => (key === 'search' ? `q=${val}` : `${key}=${val}`))
+    .join('&');
 
   const urlToFetch = params
-    ? `${backendUrl.datasets}/${elasticSearchParams.default}&${decodeURIComponent(params.toString())}`
+    ? `${backendUrl.datasets}/${elasticSearchParams.default}&${params}`
     : `${backendUrl.datasets}/${elasticSearchParams.default}`;
 
   const datasetData = await getData(urlToFetch);
@@ -54,11 +52,20 @@ export default async function Home({
   });
 
   return (
-    <Content
-      count={datasetData?.hits?.total?.value}
-      data={data}
-      filters={filters}
-      selectedFilters={datasetData?.selected_facets}
-    />
+    <React.Suspense
+      fallback={
+        <div className="flex h-[100vh] flex-col  place-content-center items-center">
+          <Spinner color="highlight" />
+          <Text>Loading...</Text>
+        </div>
+      }
+    >
+      <Content
+        count={datasetData?.hits?.total?.value}
+        data={data}
+        filters={filters}
+        selectedFilters={datasetData?.selected_facets}
+      />
+    </React.Suspense>
   );
 }

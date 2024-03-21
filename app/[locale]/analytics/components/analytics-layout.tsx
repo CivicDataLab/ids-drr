@@ -180,7 +180,7 @@ export function Content({
       const filteredDistrictOptions = DistrictDropDownOption?.filter((option) =>
         region?.includes(option.value)
       );
-      return filteredDistrictOptions;
+            return filteredDistrictOptions;
     }
   };
 
@@ -212,6 +212,7 @@ export function Content({
 
         <div className="z-max grow-[3]">
           <Combobox
+            key={JSON.stringify(filterOpt(boundary))}
             name="select region"
             group
             displaySelected

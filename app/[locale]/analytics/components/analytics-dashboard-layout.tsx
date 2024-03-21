@@ -31,7 +31,7 @@ export function AnalyticsDashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <React.Suspense
       fallback={
-        <div className="grid  h-[100vh] place-content-center">
+        <div className="flex h-[100vh] flex-col  place-content-center items-center">
           <Spinner color="highlight" />
           <Text>Loading...</Text>
         </div>
@@ -47,7 +47,7 @@ export function AnalyticsDashboardLayout({ children }: DashboardLayoutProps) {
           <SidePaneLayout />
         </div>
       ) : (
-        <div className="grid  h-[100vh] place-content-center">
+        <div className="flex h-[100vh] flex-col  place-content-center items-center">
           <Spinner color="highlight" />
           <Text>Loading...</Text>
         </div>
@@ -99,9 +99,9 @@ function SidePaneLayout() {
 
   if (!sidePaneData.isFetched)
     return (
-      <div className="grid  basis-[500px] place-content-center border-solid border-borderSubdued bg-surfaceDefault shadow-basicMd">
+      <div className="flex min-w-[500px] flex-col place-content-center items-center border-solid border-borderSubdued bg-surfaceDefault shadow-basicMd">
         <Spinner color="highlight" />
-        <Text>Loading...</Text>
+        <Text className="text-center">Loading...</Text>
       </div>
     );
   return region !== null && region.length > 0

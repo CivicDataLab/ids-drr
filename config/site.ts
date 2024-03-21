@@ -2,10 +2,10 @@ import { MainConfig, SiteConfig } from 'types';
 import { AboutUsURL, AnalyticsURL, DatasetsURL } from './consts';
 
 export const siteConfig: SiteConfig = {
-  name: 'OPub',
+  name: 'IDS-DRR',
   description:
-    'An open source platform to speed up the development of Open Data Dashboards.',
-  url: 'https://opub-www.vercel.app',
+    'Intelligent Data Solution for Disaster Risk Reduction (IDS-DRR) is an open-source platform that helps state-level and district-level Disaster Management Authorities to make timely data-driven decisions, prioritise expenditure of public funds and conduct public procurement in a manner that strengthens long-term disaster risk reduction and protects the most vulnerable people from the adverse effects of extreme weather events and climate change. ',
+  url: 'https://drr.open-contracting.in/en',
 };
 
 export const ckan = {
@@ -40,8 +40,12 @@ export const gqlConfig: {
   analytics: 'https://drr.backend.open-contracting.in/graphql',
 };
 
-export const elasticSearch = {
-  datasets: 'https://opub-backend.civicdatalab.in/facets/',
+export const backendUrl = {
+  datasets: 'https://opub-backend.civicdatalab.in',
+};
+
+export const elasticSearchParams = {
+  default: 'facets/?from=0&size=10&sort=desc&sort_by=relevance',
 };
 
 export const navbarConfig = {
@@ -69,7 +73,7 @@ export const mainConfig: MainConfig = {
     },
     {
       title: 'Datasets',
-      href: '/',
+      href: DatasetsURL,
     },
     {
       title: 'Resources',
@@ -77,7 +81,7 @@ export const mainConfig: MainConfig = {
     },
     {
       title: 'About us',
-      href: '/',
+      href: AboutUsURL,
     },
   ],
 

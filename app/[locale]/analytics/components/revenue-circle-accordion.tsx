@@ -1,11 +1,16 @@
 import React from 'react';
-import * as Accordion from '@radix-ui/react-accordion';
-import { Icon, ProgressBar, Text, Tooltip } from 'opub-ui';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  ProgressBar,
+  Text,
+  Tooltip,
+} from 'opub-ui';
 
 import { RiskColorMap } from '@/config/consts';
-import { cn, deSlugify } from '@/lib/utils';
-import { Icons } from '@/components/icons';
-import styles from './styles.module.scss';
+import { deSlugify } from '@/lib/utils';
 
 interface RevenueProps {
   revenueCircleData: any;
@@ -24,46 +29,41 @@ export const RevenueCircle = ({
   const FactorVariables = Object.keys(clonedRevenueCircleData);
 
   return (
-    <Accordion.Root type="single" collapsible>
+    <Accordion type="single" collapsible>
       {revenueCircleData.map((item: any, index: number) => (
-        <Accordion.Item
+        <AccordionItem
           key={`revenue-circle-${index}`}
           value={`revenue-circle-${index}`}
-          className="mt-4"
+          className="border-none"
         >
           <div className="flex items-center gap-3">
             <Text
               variant="headingMd"
               fontWeight="regular"
-              className="basis-1/3"
+              className=" basis-4/6"
             >
               {item?.['revenue circle']}
             </Text>
             <ProgressBar
               size="small"
-              customColor={RiskColorMap[item?.[indicator]]}
-              value={(item?.[indicator] / 6) * 100}
+              customColor={RiskColorMap[parseInt(item?.[indicator])]}
+              value={(parseInt(item?.[indicator]) / 5) * 100}
             />
-
-            <Accordion.Trigger className={cn(styles.AccordionItem, 'ml-auto')}>
-              <Tooltip
-                content={
-                  <div className="flex flex-col px-2 py-1">
-                    <Text variant="headingXl">{item?.[indicator]} / 6 </Text>
-                    <Text>HIGH RISK</Text>
-                  </div>
-                }
-              >
-                <Icon
-                  className={cn(styles.AccordionChevron)}
-                  source={Icons.down}
-                  size={20}
-                />
-              </Tooltip>
-            </Accordion.Trigger>
+            <Tooltip
+              content={
+                <div className="flex flex-col px-2 py-1">
+                  <Text variant="headingXl">
+                    {parseInt(item?.[indicator])} / 5{' '}
+                  </Text>
+                  <Text>HIGH RISK</Text>
+                </div>
+              }
+            >
+              <AccordionTrigger />
+            </Tooltip>
           </div>
 
-          <Accordion.Content className="px-3 pb-4 md:px-6">
+          <AccordionContent className="px-3 pb-4 md:px-6">
             {FactorVariables.map(
               (scoreType) =>
                 item?.[scoreType] !== undefined && (
@@ -75,10 +75,10 @@ export const RevenueCircle = ({
                   />
                 )
             )}
-          </Accordion.Content>
-        </Accordion.Item>
+          </AccordionContent>
+        </AccordionItem>
       ))}
-    </Accordion.Root>
+    </Accordion>
   );
 };
 
@@ -92,9 +92,9 @@ export const ScoreInfo = ({ label, value, indicator }: ScoreProps) => (
   <div className="mt-2">
     {label} :{' '}
     {indicator === 'risk-score' ? (
-      <strong className="pl-2">{value}/6</strong>
+      <strong className="pl-2">{parseInt(value)}/5</strong>
     ) : (
-      <strong className="pl-2">{parseFloat(value).toFixed(2)}</strong>
+      <strong className="pl-2">{value}</strong>
     )}
   </div>
 );

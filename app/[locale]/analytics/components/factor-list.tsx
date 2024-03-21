@@ -32,6 +32,7 @@ export function FactorList() {
   const indicator = searchParams.get('indicator');
   const time_period = searchParams.get('time-period') || '2023_08';
   const boundary = searchParams.get('boundary') || 'district';
+  const region = searchParams.get('region') || '';
 
   return (
     <div
@@ -63,7 +64,7 @@ export function FactorList() {
           return (
             <Link
               key={`indicator_${index}`}
-              href={`?indicator=${item.slug}&time-period=${time_period}&boundary=${boundary}`}
+              href={`?indicator=${item.slug}&time-period=${time_period}&boundary=${boundary}&region=${region}`}
             >
               <div
                 className={cn(

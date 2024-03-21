@@ -31,12 +31,12 @@ export const Footer = () => {
             height={64}
             alt="Assam DRR Dashboard"
           /> */}
-          <Image
+          {/* <Image
             src="/logo/ocp.png"
             width={91}
             height={40}
             alt="Assam DRR Dashboard"
-          />
+          /> */}
           {/* <Image
             src="/logo/ASDMA2.png"
             width={59}

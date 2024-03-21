@@ -10,18 +10,30 @@ import {
   Vulnerability,
 } from '@/public/FactorIcons';
 import { InfoSquare } from '@/public/InfoCircle';
-import * as Accordion from '@radix-ui/react-accordion';
 import { useQuery } from '@tanstack/react-query';
-import { Button, Divider, Icon, ProgressBar, Text } from 'opub-ui';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Divider,
+  ProgressBar,
+  ShareDialog,
+  Text,
+  useScreenshot,
+} from 'opub-ui';
+import { useMediaQuery } from 'usehooks-ts';
 
 import { RiskColorMap } from '@/config/consts';
 import { ANALYTICS_TIME_TRENDS } from '@/config/graphql/analaytics-queries';
 import { GraphQL } from '@/lib/api';
+import { navigateEnd } from '@/lib/navigation';
 import { cn, deSlugify, formatDateString } from '@/lib/utils';
-import { Icons } from '@/components/icons';
+import { DownloadReport } from './download-report';
 import { RevenueCircle, ScoreInfo } from './revenue-circle-accordion';
 import styles from './styles.module.scss';
 import { TimeTrends } from './time-trends';
+import { useWindowSize } from '@/hooks/use-window-size';
 
 export function SidebarLayout({ data, indicator, boundary }: any) {
   const searchParams = useSearchParams();
@@ -32,6 +44,8 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
   const region = searchParams.get('region') || '1';
 
   const DEFAULT_PERIOD = '3M';
+
+  const { width,height } = useWindowSize();
 
   const items = [
     {
@@ -92,12 +106,39 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
       ? districtData[0]?.district
       : data[0]?.['revenue-circle'];
 
+  const title = 'IDS DRR';
+  const [svgURL, setSvgURL] = React.useState<string>('');
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const { createSvg, svgToPngURL, downloadFile, domToUrl } = useScreenshot();
+
+  async function generateImage() {
+    setIsLoading(true);
+
+    const ele = window.document.querySelector('.opub-Tooltip ')
+
+    const dataImgURL = await domToUrl(ele as HTMLElement , {
+      width: width,
+      height: height,
+      backgroundColor: 'white',
+    });
+
+    const svg = await createSvg(<Template data={dataImgURL} title={title} />, {
+      width: width
+    });
+    const dataURL = await svgToPngURL(svg);
+
+    setSvgURL(dataURL);
+    setIsLoading(false);
+  }
+
   return (
     <aside
       className={cn(
         'p-4',
         'bg-surfaceDefault shadow-basicMd',
-        'shadow-inset z-1 hidden shrink-0 basis-[500px] md:block',
+        'shadow-inset z-1 hidden min-w-[500px] shrink-0 md:block',
         'overflow-y-auto border-r-1 border-solid border-borderSubdued'
       )}
     >
@@ -110,9 +151,7 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
           {IconMap[indicatorIcon || 'risk-score']}
           {deSlugify(indicatorIcon)}
         </Text>
-        <Button variant="success" kind="secondary">
-          Download Report
-        </Button>
+        <DownloadReport />
       </header>
       <Divider className="mt-2" />
       {(data.length === 1 || districtData.length === 1) && (
@@ -142,11 +181,12 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
                 <div className=" mr-3 basis-2/4">
                   <ProgressBar
                     size="small"
-                    customColor={RiskColorMap[data[indicator]]}
-                    value={(data[indicator] / 6) * 100}
+                    customColor={RiskColorMap[parseInt(data[indicator])]}
+                    value={(parseInt(data[indicator]) / 5) * 100}
                   />
                 </div>
-                <Text variant="heading2xl">{data?.[indicator]}</Text>/6
+                <Text variant="heading2xl">{parseInt(data?.[indicator])}</Text>
+                /5
               </div>
               <OtherFactorScores
                 data={data}
@@ -157,53 +197,37 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
           </div>
         ))}
       </section>
-      <Accordion.Root type="single" defaultValue="time-trends" collapsible>
-        <Accordion.Item value="revenue-circle" className="mt-4">
+      <Accordion type="single" defaultValue="time-trends" collapsible>
+        <AccordionItem value="revenue-circle" className="mt-4">
           {districtData.length === 1 && (
             <div className="mt-7">
               <div className={styles.SidebarAccordionTitle}>
                 <Text variant="bodyLg" fontWeight="bold">
                   REVENUE CIRCLE SCORE
                 </Text>
-                <Accordion.Trigger
-                  className={cn(styles.SidebarAccordionIcon, 'ml-auto')}
-                >
-                  <Icon
-                    className={cn(styles.AccordionChevron)}
-                    source={Icons.down}
-                    size={70}
-                  />
-                </Accordion.Trigger>
+                <AccordionTrigger />
               </div>
-              <Accordion.Content
+              <AccordionContent
                 className={cn(styles.RevenueBox, 'px-2 pb-4 md:px-4 ')}
               >
                 <RevenueCircle
                   revenueCircleData={revenueCircleData}
                   indicator={indicator}
                 />
-              </Accordion.Content>
+              </AccordionContent>
             </div>
           )}
-        </Accordion.Item>
-        <Accordion.Item value="time-trends" className="mt-4">
+        </AccordionItem>
+        <AccordionItem value="time-trends" className="mt-4">
           <div className="mt-5">
             <div className={styles.SidebarAccordionTitle}>
               <Text variant="bodyLg" fontWeight="bold">
                 TIME TRENDS
               </Text>
-              <Accordion.Trigger
-                className={cn(styles.SidebarAccordionIcon, 'ml-auto')}
-              >
-                <Icon
-                  className={cn(styles.AccordionChevron)}
-                  source={Icons.down}
-                  size={70}
-                />
-              </Accordion.Trigger>
+              <AccordionTrigger />
             </div>
 
-            <Accordion.Content
+            <AccordionContent
               className={cn(styles.TrendsBox, 'px-2 pb-4 md:px-4 ')}
             >
               <div className="mt-4 flex items-center gap-2">
@@ -233,10 +257,10 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
                   boundary={boundary}
                 />
               ) : null}
-            </Accordion.Content>
+            </AccordionContent>
           </div>
-        </Accordion.Item>
-      </Accordion.Root>
+        </AccordionItem>
+      </Accordion>
     </aside>
   );
 }
@@ -253,9 +277,50 @@ export function OtherFactorScores({ data, boundary, indicator }: any) {
     <div key={scoreType} className="ml-3">
       <ScoreInfo
         indicator={indicator}
-        label={`${deSlugify(scoreType)} Score`}
+        label={`${deSlugify(scoreType)}`}
         value={data?.[scoreType]}
       />
     </div>
   ));
 }
+
+const Template = ({
+  data,
+  title,
+  props,
+}: {
+  data: string | null;
+  title: string;
+  props?: {
+    height: number;
+    width: number;
+  };
+}) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        gap: '8px',
+        alignItems: 'center',
+      }}
+    >
+      <p
+        style={{
+          fontSize: '24px',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          padding: '20px',
+        }}
+      >
+        {title}
+      </p>
+      {data ? (
+        <img src={data} {...props} className="w-full" alt="SVG" />
+      ) : (
+        'Loading...'
+      )}
+    </div>
+  );
+};

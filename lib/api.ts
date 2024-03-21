@@ -1,8 +1,9 @@
-import { gqlConfig } from '@/config/site';
+import React from 'react';
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { request } from 'graphql-request';
-import React from 'react';
+
+import { gqlConfig } from '@/config/site';
 
 // create a wrapper function for graphql-request
 // that will be used by react-query
@@ -11,13 +12,9 @@ export async function GraphQL<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {
-  const data = await request(
-    gqlConfig[type],
-    document,
-    {
-      ...variables,
-    },
-  );
+  const data = await request(gqlConfig[type], document, {
+    ...variables,
+  });
   return data;
 }
 
@@ -51,12 +48,12 @@ export function useFetch(id: string, query: string) {
 }
 
 export async function getData(query: string) {
-  const res = await fetch(query, {
-    cache: 'no-cache',
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
+  try {
+    const res = await fetch(query, {
+      cache: 'no-cache',
+    });
+    return res.json();
+  } catch (err) {
+    console.log('error ', err);
   }
-
-  return res.json();
 }

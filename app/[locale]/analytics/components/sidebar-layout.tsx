@@ -18,17 +18,22 @@ import {
   AccordionTrigger,
   Divider,
   ProgressBar,
+  ShareDialog,
   Text,
+  useScreenshot,
 } from 'opub-ui';
+import { useMediaQuery } from 'usehooks-ts';
 
 import { RiskColorMap } from '@/config/consts';
 import { ANALYTICS_TIME_TRENDS } from '@/config/graphql/analaytics-queries';
 import { GraphQL } from '@/lib/api';
+import { navigateEnd } from '@/lib/navigation';
 import { cn, deSlugify, formatDateString } from '@/lib/utils';
 import { DownloadReport } from './download-report';
 import { RevenueCircle, ScoreInfo } from './revenue-circle-accordion';
 import styles from './styles.module.scss';
 import { TimeTrends } from './time-trends';
+import { useWindowSize } from '@/hooks/use-window-size';
 
 export function SidebarLayout({ data, indicator, boundary }: any) {
   const searchParams = useSearchParams();
@@ -39,6 +44,8 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
   const region = searchParams.get('region') || '1';
 
   const DEFAULT_PERIOD = '3M';
+
+  const { width,height } = useWindowSize();
 
   const items = [
     {
@@ -98,6 +105,33 @@ export function SidebarLayout({ data, indicator, boundary }: any) {
     boundary === 'district'
       ? districtData[0]?.district
       : data[0]?.['revenue-circle'];
+
+  const title = 'IDS DRR';
+  const [svgURL, setSvgURL] = React.useState<string>('');
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const { createSvg, svgToPngURL, downloadFile, domToUrl } = useScreenshot();
+
+  async function generateImage() {
+    setIsLoading(true);
+
+    const ele = window.document.querySelector('.opub-Tooltip ')
+
+    const dataImgURL = await domToUrl(ele as HTMLElement , {
+      width: width,
+      height: height,
+      backgroundColor: 'white',
+    });
+
+    const svg = await createSvg(<Template data={dataImgURL} title={title} />, {
+      width: width
+    });
+    const dataURL = await svgToPngURL(svg);
+
+    setSvgURL(dataURL);
+    setIsLoading(false);
+  }
 
   return (
     <aside
@@ -249,3 +283,44 @@ export function OtherFactorScores({ data, boundary, indicator }: any) {
     </div>
   ));
 }
+
+const Template = ({
+  data,
+  title,
+  props,
+}: {
+  data: string | null;
+  title: string;
+  props?: {
+    height: number;
+    width: number;
+  };
+}) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        gap: '8px',
+        alignItems: 'center',
+      }}
+    >
+      <p
+        style={{
+          fontSize: '24px',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          padding: '20px',
+        }}
+      >
+        {title}
+      </p>
+      {data ? (
+        <img src={data} {...props} className="w-full" alt="SVG" />
+      ) : (
+        'Loading...'
+      )}
+    </div>
+  );
+};
